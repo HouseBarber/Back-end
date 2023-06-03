@@ -1,5 +1,6 @@
 package com.projetoIntegradorII.HouseBarber.dto.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -18,6 +19,9 @@ public class UserAuthDTO {
     private String name;
     private String email;
     private List<RolesDTO> roles;
+    @JsonIgnore
+    private TokenRecoveryDTO tokenRecovery;
+    
 
     private String createdBy;
     private String lastModifiedBy;

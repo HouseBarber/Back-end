@@ -1,6 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
 import lombok.*;
 
@@ -34,6 +35,10 @@ public class UserAuth extends Auditable {
 
     @Column(name = "email")
     private String email;
+
+    @OneToOne(mappedBy = "userAuth", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private TokenRecovery tokenRecovery;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
