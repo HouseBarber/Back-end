@@ -6,6 +6,7 @@ import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.LoginDTO;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
@@ -116,4 +117,63 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+     public InfoDTO registerInitial(UserAuthDTO userAuthDTO){
+        InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
+
+        try {
+            if (userAuthDTO.getPassword().equals("")) {
+                throw new InfoException("MESSAGES.PASSWORD_REQUIRED", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getUsername().equals("") || userAuthDTO.getUsername().equals(null)) {
+                throw new InfoException("MESSAGES.USERNAME_REQUIRED", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getPassword().length() <= 5) {
+                throw new InfoException("MESSAGES.PASSWORD_LENGHT_MIN", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getPassword().length() >= 100) {
+                throw new InfoException("MESSAGES.PASSWORD_LENGHT_MAX", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getEmail().equals("") || userAuthDTO.getEmail().equals(null)){
+                throw new InfoException("MESSAGES.EMAIL_REQUIRED", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getRoles().get(0).equals("")){
+                throw new InfoException("MESSAGES.ROLES_REQUIRED", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthDTO.getRoles().get(0).equals("")) {
+                throw new InfoException("MESSAGES.ROLES_REQUIRED", HttpStatus.BAD_REQUEST);
+            }
+
+            if (userAuthRepository.findByUsernameEquals.get()){
+                throw new InfoException("MESSAGES.USERNAME_REPEAT", HttpStatus.BAD_REQUEST);
+            }
+
+            if(userAuthRepository.getUserAuthByEmail.get()){
+
+            }
+            
+            UserAuth userAuth = new UserAuth();
+            Roles roles = new Roles();
+            
+         
+
+
+            infoDTO.setMessage("MESSAGES.USER_REGISTER_SUCESS");
+            infoDTO.setStatus(HttpStatus.OK);
+            infoDTO.setObject(userAuthDTO);
+
+            return infoDTO;
+        }catch(InfoException e){
+                e.printStackTrace();
+                infoDTO.setSuccess(false);
+                infoDTO.setStatus(HttpStatus.BAD_REQUEST);
+                infoDTO.setMessage(e.getMessage());
+                return infoDTO;
+            } 
+    }  
 }
