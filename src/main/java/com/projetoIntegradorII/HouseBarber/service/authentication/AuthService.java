@@ -8,6 +8,6 @@ public interface AuthService {
 
     InfoDTO login(UserAuthDTO userDTO);
 
-
+    InfoDTO register(UserAuthDTO userAuthDTO);
 
 }
