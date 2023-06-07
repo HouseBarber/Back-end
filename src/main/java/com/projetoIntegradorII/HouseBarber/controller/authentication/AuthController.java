@@ -36,5 +36,16 @@ public class AuthController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
+    @PostMapping(value = "register")
+    @ApiOperation(value = "Register user", notes = "" +
+            "Returns registration information for the user, along with the permissions attached to the user.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 500, message = "Internal Server Error"),})
+    public ResponseEntity<InfoDTO<UserAuthDTO>> register(@RequestBody UserAuthDTO user) {
+        InfoDTO infoDTO = authService.register(user);
+        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    }
 
 }

@@ -16,6 +16,8 @@ public class UserAuthDTO {
     private String username;
     private String password;
     private String name;
+    private String cpf;
+    private String cnpj;
     private String email;
     private List<RolesDTO> roles;
 

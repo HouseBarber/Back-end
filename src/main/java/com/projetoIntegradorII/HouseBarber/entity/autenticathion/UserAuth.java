@@ -32,6 +32,12 @@ public class UserAuth extends Auditable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "cpf", nullable = false, unique = true)
+    private String cpf;
+
+    @Column(name = "cnpj", nullable = false, unique = true)
+    private String cnpj;
+
     @Column(name = "email")
     private String email;
 

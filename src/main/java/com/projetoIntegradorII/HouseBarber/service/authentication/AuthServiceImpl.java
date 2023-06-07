@@ -115,5 +115,82 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Override
+    public InfoDTO register(UserAuthDTO userAuthDTO) {
+        InfoDTO<LoginDTO> infoDTO = new InfoDTO<>();
+
+        try {
+            validateUserBasicInfo(userAuthDTO);
+            validateUserToRegister(userAuthDTO);
+//            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {
+//            });
+            UserAuth newUser = UserAuth.builder()
+                    .username(userAuthDTO.getUsername())
+                    .cpf(userAuthDTO.getCpf())
+                    .cnpj(userAuthDTO.getCnpj())
+                    .email(userAuthDTO.getEmail())
+                    .name(userAuthDTO.getName())
+                    .password(generatePassword(userAuthDTO.getPassword()))
+                    .build();
+            userAuthRepository.save(newUser);
+
+            infoDTO.setMessage("MESSAGES.USER_REGISTERED_SUCCESS");
+            infoDTO.setStatus(HttpStatus.OK);
+            return infoDTO;
+
+        } catch (InfoException e) {
+            e.printStackTrace();
+            infoDTO.setSuccess(false);
+            infoDTO.setStatus(HttpStatus.BAD_REQUEST);
+            infoDTO.setMessage(e.getMessage());
+            return infoDTO;
+        } catch (Exception e) {
+            e.printStackTrace();
+            infoDTO.setSuccess(false);
+            infoDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            infoDTO.setMessage("MESSAGES.ERROR_LOGIN");
+            return infoDTO;
+        }
+    }
+
+    private String generatePassword(String password) {
+        String saltGenerator = BCrypt.gensalt();
+        return BCrypt.hashpw(password, saltGenerator);
+    }
+
+    private void validateUserBasicInfo(UserAuthDTO userAuthDTO) {
+        if (userAuthDTO.getPassword().equals("")) {
+            throw new InfoException("MESSAGES.PASSWORD_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userAuthDTO.getUsername().equals("")) {
+            throw new InfoException("MESSAGES.USERNAME_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userAuthDTO.getPassword().length() <= 5) {
+            throw new InfoException("MESSAGES.PASSWORD_LENGHT_MIN", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userAuthDTO.getPassword().length() >= 100) {
+            throw new InfoException("MESSAGES.PASSWORD_LENGHT_MAX", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private void validateUserToRegister(UserAuthDTO userAuthDTO) {
+        boolean validateUserByUsername = userAuthRepository.existsByUsername(userAuthDTO.getUsername());
+        boolean validateUserByEmail = userAuthRepository.existsByEmail(userAuthDTO.getEmail());
+        boolean validateUserByCpf = userAuthRepository.existsByCpf(userAuthDTO.getCpf());
+        boolean validateUserByCnpj = userAuthRepository.existsByCnpj(userAuthDTO.getCnpj());
+
+        if (validateUserByUsername) {
+            throw new InfoException("MESSAGES.USER_ALREADY_EXISTS", HttpStatus.UNAUTHORIZED);
+        } else if (validateUserByEmail) {
+            throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
+        } else if (validateUserByCpf) {
+            throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
+        } else if (validateUserByCnpj) {
+            throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
+        }
+    }
 
 }
