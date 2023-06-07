@@ -19,6 +19,7 @@ public class UserAuthDTO {
     private String cpf;
     private String cnpj;
     private String email;
+    private String telephone;
     private List<RolesDTO> roles;
 
     private String createdBy;

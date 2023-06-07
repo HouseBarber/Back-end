@@ -6,8 +6,10 @@ import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.LoginDTO;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
+import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtToken;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtTokenUtil;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,6 +37,7 @@ public class AuthServiceImpl implements AuthService {
         Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private final JwtTokenUtil jwtUtils;
     private final UserAuthRepository userAuthRepository;
+    private final RolesRepository rolesRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -122,15 +126,16 @@ public class AuthServiceImpl implements AuthService {
         try {
             validateUserBasicInfo(userAuthDTO);
             validateUserToRegister(userAuthDTO);
-//            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {
-//            });
+            List<Roles> roles = setRolesToNewUser(userAuthDTO);
             UserAuth newUser = UserAuth.builder()
                     .username(userAuthDTO.getUsername())
                     .cpf(userAuthDTO.getCpf())
                     .cnpj(userAuthDTO.getCnpj())
                     .email(userAuthDTO.getEmail())
                     .name(userAuthDTO.getName())
+                    .telephone(userAuthDTO.getTelephone())
                     .password(generatePassword(userAuthDTO.getPassword()))
+                    .roles(roles)
                     .build();
             userAuthRepository.save(newUser);
 
@@ -174,6 +179,14 @@ public class AuthServiceImpl implements AuthService {
         if (userAuthDTO.getPassword().length() >= 100) {
             throw new InfoException("MESSAGES.PASSWORD_LENGHT_MAX", HttpStatus.BAD_REQUEST);
         }
+
+        if(userAuthDTO.getCpf().equals("") && userAuthDTO.getCnpj().equals("")) {
+            throw new InfoException("O usuario deve possuir CPF ou CNPJ", HttpStatus.BAD_REQUEST);
+        }
+
+        if(!userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
+            throw new InfoException("O usuario deve possuir somente CPF ou CNPJ", HttpStatus.BAD_REQUEST);
+        }
     }
 
     private void validateUserToRegister(UserAuthDTO userAuthDTO) {
@@ -184,13 +197,31 @@ public class AuthServiceImpl implements AuthService {
 
         if (validateUserByUsername) {
             throw new InfoException("MESSAGES.USER_ALREADY_EXISTS", HttpStatus.UNAUTHORIZED);
-        } else if (validateUserByEmail) {
-            throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
-        } else if (validateUserByCpf) {
-            throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
-        } else if (validateUserByCnpj) {
-            throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
         }
+        if (validateUserByEmail) {
+            throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
+        }
+        if(userAuthDTO.getCnpj().equals("")){
+            if (validateUserByCpf) {
+                throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
+            }
+        }
+        if (userAuthDTO.getCpf().equals("")) {
+            if (validateUserByCnpj) {
+                throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
+
+    private List<Roles> setRolesToNewUser(UserAuthDTO userAuthDTO){
+        List<Roles> roles = rolesRepository.findAll();
+        if (roles.isEmpty()) {
+            throw new InfoException("Erro ao buscar roles.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Long roleId = userAuthDTO.getRoles().get(0).getId();
+        return roles.stream()
+                .filter(role -> role.getId().equals(roleId))
+                .toList();
     }
 
 }
