@@ -76,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/favicon.ico",
                     "/v1/auth/**",
                     "/v1/user/changePassword",
+                    "/v1/roles/**",
                     "/configuration/ui",
                     "/swagger-resources/**", "/csrf",
                     "/configuration/security",
