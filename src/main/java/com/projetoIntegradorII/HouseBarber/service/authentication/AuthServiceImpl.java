@@ -75,8 +75,7 @@ public class AuthServiceImpl implements AuthService {
                 throw new InfoException("MESSAGES.WRONG_PASSWORD", HttpStatus.UNAUTHORIZED);
             }
 
-            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {
-            });
+            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {});
 
             JwtToken jwtToken = new JwtToken();
             jwtToken.setId(user.get().getId().toString());
