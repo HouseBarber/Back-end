@@ -17,6 +17,7 @@ import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.TokenRecoveryRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -28,9 +29,9 @@ import javax.transaction.Transactional;
 @Slf4j
 public class PasswordResetServiceImpl implements PasswordResetService {
     
-    UserAuthRepository userRepository;
+    private final UserAuthRepository userRepository;
 
-    TokenRecoveryRepository tokenRecoveryRepository;
+    private final TokenRecoveryRepository tokenRecoveryRepository;
 
     @Autowired
     EmailService emailService;
@@ -161,7 +162,14 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 
     @Override
     public void changePassword(UserAuth user, TokenRecoveryDTO tokenRecoveryDTO) {
-        user.setPassword(tokenRecoveryDTO.getPassword());
+        String saltGenerator = BCrypt.gensalt();
+        String newPassowrd = BCrypt.hashpw(tokenRecoveryDTO.getPassword(), saltGenerator);
+        user.setPassword(newPassowrd);
+    }
+
+    private String generatePassword(String password) {
+        String saltGenerator = BCrypt.gensalt();
+        return BCrypt.hashpw(password, saltGenerator);
     }
 
     @Override
