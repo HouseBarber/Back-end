@@ -3,8 +3,6 @@ package com.projetoIntegradorII.HouseBarber.controller.authentication;
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.TokenRecoveryDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.TokenRecovery;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.service.authentication.AuthService;
 import com.projetoIntegradorII.HouseBarber.service.authentication.PasswordResetService;
 
@@ -51,8 +49,8 @@ public class AuthController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<UserAuth>> recoveryPassword(@RequestBody UserAuthDTO user) {
-        InfoDTO<UserAuth> infoDTO = passwordResetService.recoveryPassword(user);
+    public ResponseEntity<InfoDTO<UserAuthDTO>> recoveryPassword(@RequestBody UserAuthDTO user) {
+        InfoDTO<UserAuthDTO> infoDTO = passwordResetService.recoveryPassword(user);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
@@ -63,8 +61,8 @@ public class AuthController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<UserAuth>> changePassword(@RequestBody TokenRecoveryDTO tokenRecoveryDTO) {
-        InfoDTO<UserAuth> infoDTO = passwordResetService.changePassword(tokenRecoveryDTO);
+    public ResponseEntity<InfoDTO<UserAuthDTO>> changePassword(@RequestBody TokenRecoveryDTO tokenRecoveryDTO) {
+        InfoDTO<UserAuthDTO> infoDTO = passwordResetService.changePassword(tokenRecoveryDTO);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
@@ -75,8 +73,8 @@ public class AuthController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<TokenRecovery>> validToken(@PathVariable String token){
-        InfoDTO<TokenRecovery> infoDTO = passwordResetService.validToken(token);
+    public ResponseEntity<InfoDTO<TokenRecoveryDTO>> validToken(@PathVariable String token){
+        InfoDTO<TokenRecoveryDTO> infoDTO = passwordResetService.validToken(token);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     @PostMapping(value = "register")

@@ -3,6 +3,9 @@ package com.projetoIntegradorII.HouseBarber.service.authentication;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.projetoIntegradorII.HouseBarber.service.Utils.EmailService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,15 @@ import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.TokenRecoveryRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class PasswordResetServiceImpl implements PasswordResetService {
     
     @Autowired
@@ -23,6 +34,9 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 
     @Autowired
     TokenRecoveryRepository tokenRecoveryRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public InfoDTO<UserAuthDTO> recoveryPassword(UserAuthDTO userDTO) {
@@ -60,6 +74,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
             validateTokenRecoveryDTO(tokenRecoveryDTO);
             UserAuth userAuth = getUserByToken(tokenRecoveryDTO);
             changePassword(userAuth, tokenRecoveryDTO);
+            tokenRecoveryRepository.deleteById(userAuth.getTokenRecovery().getId());
             infoDTO.setMessage("Alterada com sucesso");
             infoDTO.setStatus(HttpStatus.OK);
 
@@ -138,13 +153,13 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     }
 
     @Override
-    public void sendPasswordResetEmail(UserAuth user) {
+    public void sendPasswordResetEmail(UserAuth user) throws MessagingException {
         String userEmail = user.getEmail();
         String userTokenRecover = user.getTokenRecovery().getToken();
         String subject = "Password Reset Request";
         String text = "To reset your password, click the link below:\n"
                 + "http://localhost:4200/changePassword/" + userTokenRecover;
-        
+        emailService.sendSimpleMessage(userEmail,subject,text);
     }
 
     @Override
