@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.projetoIntegradorII.HouseBarber.service.Utils.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -29,10 +28,8 @@ import javax.transaction.Transactional;
 @Slf4j
 public class PasswordResetServiceImpl implements PasswordResetService {
     
-    @Autowired
     UserAuthRepository userRepository;
 
-    @Autowired
     TokenRecoveryRepository tokenRecoveryRepository;
 
     @Autowired
