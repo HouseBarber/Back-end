@@ -22,9 +22,8 @@ public class TokenRecovery extends Auditable {
     private Long id;
     @Column(name = "token")
     private String token;
-    @OneToOne
-    @JoinColumn(name = "userAuth_id")
-    @JsonBackReference
+    @OneToOne()
+    @JoinColumn(name = "user_auth", referencedColumnName = "id")
     private UserAuth userAuth;
 
     public boolean isValid(){

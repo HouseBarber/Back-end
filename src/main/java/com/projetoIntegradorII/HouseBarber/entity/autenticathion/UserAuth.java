@@ -42,8 +42,7 @@ public class UserAuth extends Auditable {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(mappedBy = "userAuth", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
     private TokenRecovery tokenRecovery;
 
     @Column(name = "telephone")
