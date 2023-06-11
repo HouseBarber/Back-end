@@ -183,6 +183,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         }
         token.setUserAuth(user);
         user.setTokenRecovery(token);
+        tokenRecoveryRepository.save(token);
         userRepository.save(user);
     }
 

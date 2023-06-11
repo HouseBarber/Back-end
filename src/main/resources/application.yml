@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/barbearia
     username: root
-    password: root
+    password: Komoha123$
   jpa:
     show-sql: true
     hibernate.ddl-auto: update
@@ -47,6 +47,5 @@ auth:
   token-forgot-password: TLGqJAPC0UdCWceNoCeiIJKtwwBIey3G
   public-sing-up-url-enable: false
 
-
-  #Alterar a autenticação para aceitar e enviar email do google
-  #Criar coluna no USERAUTH para salvar o token de recuperação CHAMADA TOKENRECOVERY
+#hbhousebarber@gmail.com
+#Barbearia123$
