@@ -219,14 +219,87 @@ public class AuthServiceImpl implements AuthService {
                 .toList();
     }
 
+    private void validateUserUpdateInfo(UserAuthDTO userAuthDTO) {
+        if (userAuthDTO.getUsername().equals("")) {
+            throw new InfoException("MESSAGES.USERNAME_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getName().equals("")) {
+            throw new InfoException("MESSAGES.NAME_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        /*
+        if(userAuthDTO.getCpf().equals("") && userAuthDTO.getCnpj().equals("")) {
+            throw new InfoException("O usuario deve possuir CPF ou CNPJ", HttpStatus.BAD_REQUEST);
+        }
+        if(!userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
+            throw new InfoException("O usuario deve possuir somente CPF ou CNPJ", HttpStatus.BAD_REQUEST);
+        }
+        */
+        if (userAuthDTO.getEmail().equals("")) {
+            throw new InfoException("MESSAGES.EMAIL_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getTelephone().equals("")) {
+            throw new InfoException("MESSAGES.TELEPHONE_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getGender().equals("")) {
+            throw new InfoException("MESSAGES.GENDER_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getDateBirth().equals("")) {
+            throw new InfoException("MESSAGES.DATE_BIRTH_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getDescription().equals("")) {
+            throw new InfoException("MESSAGES.DESCRIPTION_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private void validateAddressUpdateInfo(UserAuthDTO userAuthDTO){
+        if (userAuthDTO.getCep().equals("")) {
+            throw new InfoException("MESSAGES.CEP_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getState().equals("")) {
+            throw new InfoException("MESSAGES.STATE_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getCity().equals("")) {
+            throw new InfoException("MESSAGES.CITY_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getNeighborhood().equals("")) {
+            throw new InfoException("MESSAGES.NEIGHBORHOOD_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getStreet().equals("")) {
+            throw new InfoException("MESSAGES.STREET_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getNumber().equals("")) {
+            throw new InfoException("MESSAGES.NUMBER_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+        if (userAuthDTO.getComplement().equals("")) {
+            throw new InfoException("MESSAGES.COMPLEMENT_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Override
     public InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO) {
         InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
         try {
+            validateUserUpdateInfo(userAuthDTO);
+            validateAddressUpdateInfo(userAuthDTO);
             Optional<UserAuth> usuarioExistente = userAuthRepository.findById(id);
             if (usuarioExistente.isPresent()) {
                 UserAuth userAuth = usuarioExistente.get();
+
+                userAuth.setName(userAuthDTO.getName());
+                userAuth.setUsername(userAuthDTO.getUsername());
                 userAuth.setEmail(userAuthDTO.getEmail());
+                userAuth.setTelephone(userAuthDTO.getTelephone());
+                userAuth.setGender(userAuthDTO.getGender());
+                userAuth.setDateBirth(userAuthDTO.getDateBirth());
+                userAuth.setDescription(userAuthDTO.getDescription());
+
+                userAuth.setCep(userAuthDTO.getCep());
+                userAuth.setCity(userAuthDTO.getCity());
+                userAuth.setState(userAuthDTO.getState());
+                userAuth.setNeighborhood(userAuthDTO.getNeighborhood());
+                userAuth.setStreet(userAuthDTO.getStreet());
+                userAuth.setComplement(userAuthDTO.getComplement());
+                userAuth.setNumber(userAuthDTO.getNumber());
                 userAuthRepository.save(userAuth);
 
                 infoDTO.setMessage("Atualização realizada com sucesso");
