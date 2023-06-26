@@ -15,7 +15,6 @@ import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtToken;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtTokenUtil;
 import com.projetoIntegradorII.HouseBarber.security.Response.JwtResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -24,14 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class AuthServiceImpl implements AuthService {
-
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
         Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -223,4 +219,27 @@ public class AuthServiceImpl implements AuthService {
                 .toList();
     }
 
+    @Override
+    public InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO) {
+        InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
+        try {
+            Optional<UserAuth> usuarioExistente = userAuthRepository.findById(id);
+            if (usuarioExistente.isPresent()) {
+                UserAuth userAuth = usuarioExistente.get();
+                userAuth.setEmail(userAuthDTO.getEmail());
+                userAuthRepository.save(userAuth);
+
+                infoDTO.setMessage("Atualização realizada com sucesso");
+                infoDTO.setStatus(HttpStatus.OK);
+                infoDTO.setObject(userAuthDTO);
+            } else {
+                throw new InfoException("Usuário não encontrado com o ID: " + id, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            throw new InfoException("Ocorreu um erro ao atualizar o usuário", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return infoDTO;
+    }
+
 }
+

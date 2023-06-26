@@ -1,7 +1,8 @@
 package com.projetoIntegradorII.HouseBarber.service.address;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
-import com.projetoIntegradorII.HouseBarber.dto.authentication.AddressDTO;
+import com.projetoIntegradorII.HouseBarber.dto.Address.AddressDTO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
