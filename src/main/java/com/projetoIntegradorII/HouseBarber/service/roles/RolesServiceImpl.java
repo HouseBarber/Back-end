@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import lombok.RequiredArgsConstructor;

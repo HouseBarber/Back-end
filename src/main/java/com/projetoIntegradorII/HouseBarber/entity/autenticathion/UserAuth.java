@@ -1,9 +1,9 @@
 package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
-import com.projetoIntegradorII.HouseBarber.enums.Specialties;
+import com.projetoIntegradorII.HouseBarber.entity.address.Address;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 
 import lombok.*;
 
@@ -58,27 +58,8 @@ public class UserAuth extends Auditable {
     @Column(name = "telephone")
     private String telephone;
 
-    @Column(name = "cep")
-    private String cep;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "state")
-    private String state;
-
-    @Column(name = "neighborhood")
-    private String neighborhood;
-
-    @Column(name = "street")
-    private String street;
-
-    @Column(name = "number")
-    private String number;
-
-    @Column(name = "complement")
-    private String complement;
-
+    @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
+    private Address address;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "users_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Roles> roles = new ArrayList<>();

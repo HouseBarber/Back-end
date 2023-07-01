@@ -1,7 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.controller.address;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
-import com.projetoIntegradorII.HouseBarber.dto.Address.AddressDTO;
+import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.service.address.AddressService;
 import io.swagger.annotations.Api;

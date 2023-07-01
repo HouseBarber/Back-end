@@ -32,4 +32,16 @@ public class UserController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
+    @PutMapping(value = "/update/{id}")
+    @ApiOperation(value = "Update user", notes = "" +
+            "Returns update information for the user, along with the permissions attached to the user.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 500, message = "Internal Server Error"),})
+    public ResponseEntity<InfoDTO<UserAuthDTO>> update(@PathVariable Long id, @RequestBody UserAuthDTO user) {
+        InfoDTO<UserAuthDTO> infoDTO = userService.update(id, user);
+        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.service.address;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
-import com.projetoIntegradorII.HouseBarber.dto.Address.AddressDTO;
+import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,11 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 @Service
 @Transactional
 @RequiredArgsConstructor

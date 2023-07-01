@@ -10,7 +10,7 @@ public interface AuthService {
 
     InfoDTO register(UserAuthDTO userAuthDTO);
 
-    InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO);
+
 
 }
 
