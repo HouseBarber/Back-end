@@ -58,7 +58,8 @@ public class UserAuth extends Auditable {
     @Column(name = "telephone")
     private String telephone;
 
-    @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
     private Address address;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "users_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))

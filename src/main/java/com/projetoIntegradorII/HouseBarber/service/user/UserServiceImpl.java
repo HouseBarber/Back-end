@@ -8,6 +8,7 @@ import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,48 +24,58 @@ public class UserServiceImpl implements UserService {
     private final UserAuthRepository userAuthRepository;
 
     @Override
-    public InfoDTO enrichUser(UserAuthDTO userAuthDTO) {
-        InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
-
-
-
-        return infoDTO;
-    }
-
-    @Override
     public InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO) {
         InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
         try {
             validateUserUpdateInfo(userAuthDTO);
-            Optional<UserAuth> usuarioExistente = userAuthRepository.findById(id);
-            if (usuarioExistente.isPresent()) {
-                UserAuth userAuth = usuarioExistente.get();
+            Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
+            userIsPresent(userAuthOptional,id);
 
-                userAuth.setName(userAuthDTO.getName());
-                userAuth.setUsername(userAuthDTO.getUsername());
-                userAuth.setEmail(userAuthDTO.getEmail());
-                userAuth.setTelephone(userAuthDTO.getTelephone());
-                userAuth.setGender(userAuthDTO.getGender());
-                userAuth.setDateBirth(userAuthDTO.getDateBirth());
-                userAuth.setDescription(userAuthDTO.getDescription());
+            UserAuth userAuth = userAuthOptional.get();
 
-                userAuth.getAddress().setCep(userAuthDTO.getAddressDTO().getCep());
-                userAuth.getAddress().setCity(userAuthDTO.getAddressDTO().getCity());
-                userAuth.getAddress().setState(userAuthDTO.getAddressDTO().getState());
-                userAuth.getAddress().setNeighborhood(userAuthDTO.getAddressDTO().getNeighborhood());
-                userAuth.getAddress().setStreet(userAuthDTO.getAddressDTO().getStreet());
-                userAuth.getAddress().setComplement(userAuthDTO.getAddressDTO().getComplement());
-                userAuth.getAddress().setNumber(userAuthDTO.getAddressDTO().getNumber());
-                userAuthRepository.save(userAuth);
+            userAuth.setName(userAuthDTO.getName());
+            userAuth.setUsername(userAuthDTO.getUsername());
+            userAuth.setEmail(userAuthDTO.getEmail());
+            userAuth.setTelephone(userAuthDTO.getTelephone());
+            userAuth.setGender(userAuthDTO.getGender());
+            userAuth.setDateBirth(userAuthDTO.getDateBirth());
+            userAuth.setDescription(userAuthDTO.getDescription());
 
-                infoDTO.setMessage("Atualização realizada com sucesso");
-                infoDTO.setStatus(HttpStatus.OK);
-                infoDTO.setObject(userAuthDTO);
-            } else {
-                throw new InfoException("Usuário não encontrado com o ID: " + id, HttpStatus.BAD_REQUEST);
-            }
+            userAuth.getAddress().setCep(userAuthDTO.getAddressDTO().getCep());
+            userAuth.getAddress().setCity(userAuthDTO.getAddressDTO().getCity());
+            userAuth.getAddress().setState(userAuthDTO.getAddressDTO().getState());
+            userAuth.getAddress().setNeighborhood(userAuthDTO.getAddressDTO().getNeighborhood());
+            userAuth.getAddress().setStreet(userAuthDTO.getAddressDTO().getStreet());
+            userAuth.getAddress().setComplement(userAuthDTO.getAddressDTO().getComplement());
+            userAuth.getAddress().setNumber(userAuthDTO.getAddressDTO().getNumber());
+            userAuthRepository.save(userAuth);
+
+            infoDTO.setMessage("Atualização realizada com sucesso");
+            infoDTO.setStatus(HttpStatus.OK);
+            infoDTO.setObject(userAuthDTO);
+
         } catch (Exception e) {
             throw new InfoException("Ocorreu um erro ao atualizar o usuário", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return infoDTO;
+    }
+
+    @Override
+    public InfoDTO<UserAuthDTO> getUserById(Long id) {
+        InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
+        try {
+            Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
+            userIsPresent(userAuthOptional,id);
+            UserAuth userAuth = userAuthOptional.get();
+            ModelMapper modelMapper = new ModelMapper();
+
+            UserAuthDTO userAuthDTO = modelMapper.map(userAuth,UserAuthDTO.class);
+
+            infoDTO.setObject(userAuthDTO);
+            infoDTO.setStatus(HttpStatus.OK);
+
+        } catch (Exception e){
+            throw new InfoException("Ocorreu um erro ao buscar o usuário", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return infoDTO;
     }
@@ -123,6 +134,12 @@ public class UserServiceImpl implements UserService {
         }
         if (userAuthDTO.getAddressDTO().getComplement().equals("")) {
             throw new InfoException("MESSAGES.COMPLEMENT_REQUIRED", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private void userIsPresent(Optional<UserAuth> userAuth,Long id){
+        if(!userAuth.isPresent()){
+            throw new InfoException("Usuário não encontrado com o ID: " + id, HttpStatus.BAD_REQUEST);
         }
     }
 

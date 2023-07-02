@@ -1,6 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.controller.user;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
+import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.service.user.UserService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/user")
 @Api(tags = {"User Controller"})
@@ -20,18 +23,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    @PutMapping(value = "/{id}")
-    @ApiOperation(value = "Adiciona informações do usuário", notes = "" +
-            "Recebe informações do usuário e salva")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
-            @ApiResponse(code = 401, message = "Não Autorizado"),
-            @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<UserAuthDTO>> enrichUser(@RequestBody UserAuthDTO userAuthDTO) {
-        InfoDTO<UserAuthDTO> infoDTO = userService.enrichUser(userAuthDTO);
-        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
-    }
-
     @PutMapping(value = "/update/{id}")
     @ApiOperation(value = "Update user", notes = "" +
             "Returns update information for the user, along with the permissions attached to the user.")
@@ -41,6 +32,17 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal Server Error"),})
     public ResponseEntity<InfoDTO<UserAuthDTO>> update(@PathVariable Long id, @RequestBody UserAuthDTO user) {
         InfoDTO<UserAuthDTO> infoDTO = userService.update(id, user);
+        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    }
+
+    @GetMapping(value = "{id}")
+    @ApiOperation(value = "Busca todas as Roles", notes = "Encontra todos os roles sem filtragem alguma")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
+            @ApiResponse(code = 401, message = "Não Autorizado"),
+            @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
+    public ResponseEntity<InfoDTO<UserAuthDTO>> getUserById(@PathVariable Long id){
+        InfoDTO<UserAuthDTO> infoDTO = userService.getUserById(id);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 

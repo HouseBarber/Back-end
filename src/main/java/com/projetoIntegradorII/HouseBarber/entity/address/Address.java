@@ -40,7 +40,7 @@ public class Address extends Auditable {
     @Column(name = "complement")
     private String complement;
 
-    @OneToOne()
-    @JoinColumn(name = "user_auth", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "address")
     private UserAuth userAuth;
 }
