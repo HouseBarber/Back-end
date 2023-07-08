@@ -31,7 +31,7 @@ public class UserAuthDTO {
     private Date dateBirth;
     private String description;
 
-    private AddressDTO addressDTO;
+    private AddressDTO address;
     private String createdBy;
     private String lastModifiedBy;
     private Boolean active;

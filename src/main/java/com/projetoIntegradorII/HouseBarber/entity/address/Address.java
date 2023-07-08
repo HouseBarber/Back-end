@@ -19,6 +19,7 @@ public class Address extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "cep")
     private String cep;
 
@@ -39,7 +40,6 @@ public class Address extends Auditable {
 
     @Column(name = "complement")
     private String complement;
-
 
     @OneToOne(mappedBy = "address")
     private UserAuth userAuth;

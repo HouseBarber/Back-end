@@ -28,27 +28,19 @@ public class UserServiceImpl implements UserService {
         InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
         try {
             validateUserUpdateInfo(userAuthDTO);
-            Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
-            userIsPresent(userAuthOptional,id);
+            Optional<UserAuth> userAuthOptional = userAuthRepository.findById(userAuthDTO.getId());
+            // userIsPresent(userAuthOptional,id);
 
-            UserAuth userAuth = userAuthOptional.get();
+            if(userAuthOptional.isEmpty()){
+                throw new InfoException("Usuario não encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
-            userAuth.setName(userAuthDTO.getName());
-            userAuth.setUsername(userAuthDTO.getUsername());
-            userAuth.setEmail(userAuthDTO.getEmail());
-            userAuth.setTelephone(userAuthDTO.getTelephone());
-            userAuth.setGender(userAuthDTO.getGender());
-            userAuth.setDateBirth(userAuthDTO.getDateBirth());
-            userAuth.setDescription(userAuthDTO.getDescription());
-
-            userAuth.getAddress().setCep(userAuthDTO.getAddressDTO().getCep());
-            userAuth.getAddress().setCity(userAuthDTO.getAddressDTO().getCity());
-            userAuth.getAddress().setState(userAuthDTO.getAddressDTO().getState());
-            userAuth.getAddress().setNeighborhood(userAuthDTO.getAddressDTO().getNeighborhood());
-            userAuth.getAddress().setStreet(userAuthDTO.getAddressDTO().getStreet());
-            userAuth.getAddress().setComplement(userAuthDTO.getAddressDTO().getComplement());
-            userAuth.getAddress().setNumber(userAuthDTO.getAddressDTO().getNumber());
-            userAuthRepository.save(userAuth);
+            
+            if(userAuthDTO.getName() != null && !userAuthDTO.getName().equals("")){
+                userAuthOptional.get().setName(userAuthDTO.getName());
+            }
+           
+            userAuthRepository.save(userAuthOptional.get());
 
             infoDTO.setMessage("Atualização realizada com sucesso");
             infoDTO.setStatus(HttpStatus.OK);
@@ -114,25 +106,25 @@ public class UserServiceImpl implements UserService {
 
 
     private void validateAddressUpdateInfo(UserAuthDTO userAuthDTO){
-        if (userAuthDTO.getAddressDTO().getCep().equals("")) {
+        if (userAuthDTO.getAddress().getCep().equals("")) {
             throw new InfoException("MESSAGES.CEP_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getState().equals("")) {
+        if (userAuthDTO.getAddress().getState().equals("")) {
             throw new InfoException("MESSAGES.STATE_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getCity().equals("")) {
+        if (userAuthDTO.getAddress().getCity().equals("")) {
             throw new InfoException("MESSAGES.CITY_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getNeighborhood().equals("")) {
+        if (userAuthDTO.getAddress().getNeighborhood().equals("")) {
             throw new InfoException("MESSAGES.NEIGHBORHOOD_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getStreet().equals("")) {
+        if (userAuthDTO.getAddress().getStreet().equals("")) {
             throw new InfoException("MESSAGES.STREET_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getNumber().equals("")) {
+        if (userAuthDTO.getAddress().getNumber().equals("")) {
             throw new InfoException("MESSAGES.NUMBER_REQUIRED", HttpStatus.BAD_REQUEST);
         }
-        if (userAuthDTO.getAddressDTO().getComplement().equals("")) {
+        if (userAuthDTO.getAddress().getComplement().equals("")) {
             throw new InfoException("MESSAGES.COMPLEMENT_REQUIRED", HttpStatus.BAD_REQUEST);
         }
     }
