@@ -51,40 +51,6 @@ public class UserServiceImpl implements UserService {
             updateCNPJField(userAuthOptional.get(),userAuthDTO.getCnpj());
             updateDateNotNullAndNotEmpty(userAuthOptional.get()::setDateBirth,userAuthDTO.getDateBirth());
             updateAddressFields(userAuthOptional.get(), userAuthDTO.getAddress());
-
-
-
-         /*
-
-
-            if(userAuthDTO.getAddress() != null) {
-                if(userAuthDTO.getAddress().getNumber() != null && userAuthDTO.getAddress().getNumber().equals("")){
-                    userAuthOptional.get().getAddress().setNumber(userAuthDTO.getAddress().getNumber());
-                }
-                if(userAuthDTO.getAddress().getNeighborhood() != null && userAuthDTO.getAddress().getNeighborhood().equals("")){
-                    userAuthOptional.get().getAddress().setNeighborhood(userAuthDTO.getAddress().getNeighborhood());
-                }
-                if(userAuthDTO.getAddress().getState() != null && userAuthDTO.getAddress().getState().equals("")){
-                    userAuthOptional.get().getAddress().setState(userAuthDTO.getAddress().getState());
-                }
-                if(userAuthDTO.getAddress().getCep() != null && userAuthDTO.getAddress().getCep().equals("")){
-                    userAuthOptional.get().getAddress().setCep(userAuthDTO.getAddress().getCep());
-                }
-                if(userAuthDTO.getAddress().getCity() != null && userAuthDTO.getAddress().getCity().equals("")){
-                    userAuthOptional.get().getAddress().setCity(userAuthDTO.getAddress().getCity());
-                }
-                if(userAuthDTO.getAddress().getComplement() != null && userAuthDTO.getAddress().getComplement().equals("")){
-                    userAuthOptional.get().getAddress().setComplement(userAuthDTO.getAddress().getComplement());
-                }
-                if(userAuthDTO.getAddress().getStreet() != null && userAuthDTO.getAddress().getStreet().equals("")){
-
-                }
-
-                */
-
-
-
-           
             userAuthRepository.save(userAuthOptional.get());
 
             infoDTO.setMessage("Atualização realizada com sucesso");
@@ -103,10 +69,9 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
             userIsPresent(userAuthOptional,id);
-            UserAuth userAuth = userAuthOptional.get();
             ModelMapper modelMapper = new ModelMapper();
 
-            UserAuthDTO userAuthDTO = modelMapper.map(userAuth,UserAuthDTO.class);
+            UserAuthDTO userAuthDTO = modelMapper.map(userAuthOptional.get(),UserAuthDTO.class);
 
             infoDTO.setObject(userAuthDTO);
             infoDTO.setStatus(HttpStatus.OK);

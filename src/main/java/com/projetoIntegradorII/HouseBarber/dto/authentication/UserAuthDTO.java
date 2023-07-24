@@ -24,6 +24,7 @@ public class UserAuthDTO {
     private String email;
     private String telephone;
     private List<RolesDTO> roles;
+
     @JsonIgnore
     private TokenRecoveryDTO tokenRecovery;
 

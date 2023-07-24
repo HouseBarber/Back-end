@@ -36,8 +36,8 @@ public class AddressController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<List<RolesDTO>>> getAddressByCep(@PathVariable("cep") String cep) throws MalformedURLException {
-        InfoDTO<List<RolesDTO>> infoDTO = addressService.getAddressByCep(cep);
+    public ResponseEntity<InfoDTO<List<AddressDTO>>> getAddressByCep(@PathVariable("cep") String cep) throws MalformedURLException {
+        InfoDTO<List<AddressDTO>> infoDTO = addressService.getAddressByCep(cep);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     
