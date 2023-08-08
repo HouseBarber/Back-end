@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/barbearia
     username: root
-    password: Komoha123$
+    password: barbearia
   jpa:
     show-sql: true
     hibernate.ddl-auto: update
