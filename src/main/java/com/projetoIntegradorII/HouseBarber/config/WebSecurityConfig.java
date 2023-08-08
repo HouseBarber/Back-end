@@ -55,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http)
         throws Exception {
@@ -77,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/v1/auth/**",
                     "/v1/user/changePassword",
                     "/v1/roles/**",
+                    "/v1/image/**",
                     "/configuration/ui",
                     "/swagger-resources/**", "/csrf",
                     "/configuration/security",
