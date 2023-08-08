@@ -1,4 +1,4 @@
-package com.projetoIntegradorII.HouseBarber.controller.images;
+package com.projetoIntegradorII.HouseBarber.controller.userImage;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserImage;
-import com.projetoIntegradorII.HouseBarber.service.imageUpload.UserImageService;
+import com.projetoIntegradorII.HouseBarber.entity.userImage.UserImage;
+import com.projetoIntegradorII.HouseBarber.service.userImage.UserImageService;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;

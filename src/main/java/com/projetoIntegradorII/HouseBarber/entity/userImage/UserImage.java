@@ -1,4 +1,4 @@
-package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
+package com.projetoIntegradorII.HouseBarber.entity.userImage;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 
 import lombok.Data;
 

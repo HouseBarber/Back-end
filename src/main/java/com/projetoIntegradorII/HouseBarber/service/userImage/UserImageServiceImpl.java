@@ -1,4 +1,4 @@
-package com.projetoIntegradorII.HouseBarber.service.imageUpload;
+package com.projetoIntegradorII.HouseBarber.service.userImage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserImage;
+import com.projetoIntegradorII.HouseBarber.entity.userImage.UserImage;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
-import com.projetoIntegradorII.HouseBarber.repository.authentication.UserImageRepository;
+import com.projetoIntegradorII.HouseBarber.repository.userImage.UserImageRepository;
 
 @Service
 public class UserImageServiceImpl implements UserImageService{
