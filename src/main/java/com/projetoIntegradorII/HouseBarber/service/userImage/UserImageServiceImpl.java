@@ -14,6 +14,7 @@ import com.projetoIntegradorII.HouseBarber.entity.userImage.UserImage;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import com.projetoIntegradorII.HouseBarber.repository.userImage.UserImageRepository;
 
+
 @Service
 public class UserImageServiceImpl implements UserImageService{
     @Autowired
