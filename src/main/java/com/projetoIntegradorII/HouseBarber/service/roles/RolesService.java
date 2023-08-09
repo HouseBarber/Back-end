@@ -6,5 +6,5 @@ import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import java.util.List;
 
 public interface RolesService {
-    InfoDTO<List<RolesDTO>> getAllRoles();
+    List<RolesDTO> getAllRoles();
 }
