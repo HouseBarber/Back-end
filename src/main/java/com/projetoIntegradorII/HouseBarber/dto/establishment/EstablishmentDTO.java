@@ -13,6 +13,8 @@ public class EstablishmentDTO {
 
     private String name;
 
+    private String cnpj;
+
     private String contact;
 
     private Double billing;

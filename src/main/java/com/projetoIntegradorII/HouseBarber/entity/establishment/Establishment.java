@@ -28,6 +28,9 @@ public class Establishment {
     @Column(name = "nameFantasy", nullable = true)
     private String name;
 
+    @Column(name = "cnpj", nullable = true)
+    private String cnpj;
+
     @Column(name = "contact", nullable = true)
     private String contact;
 
