@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: projeto-integrador-ii-houseBarber
+    name: projeto-integrador-ii-barbearia
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -15,6 +15,27 @@ spring:
     hibernate.ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hbhousebarber@gmail.com
+    password: upfsonixrzaeedzo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 284619409068-qaljhs8mf3va5tu6kg05o7qduuf8rp0h.apps.googleusercontent.com
+            client-secret: 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
+            scope: https://www.googleapis.com/auth/gmail.send
+
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
@@ -25,3 +46,6 @@ auth:
   jwt-expiration-miliseg: 86400000
   token-forgot-password: TLGqJAPC0UdCWceNoCeiIJKtwwBIey3G
   public-sing-up-url-enable: false
+
+#hbhousebarber@gmail.com
+#Barbearia123$
