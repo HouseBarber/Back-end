@@ -6,7 +6,7 @@ import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.LoginDTO;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
@@ -15,7 +15,6 @@ import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtToken;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtTokenUtil;
 import com.projetoIntegradorII.HouseBarber.security.Response.JwtResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -24,14 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class AuthServiceImpl implements AuthService {
-
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
         Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -75,8 +71,7 @@ public class AuthServiceImpl implements AuthService {
                 throw new InfoException("MESSAGES.WRONG_PASSWORD", HttpStatus.UNAUTHORIZED);
             }
 
-            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {
-            });
+            List<RolesDTO> roles = objectMapper.convertValue(user.get().getRoles(), new TypeReference<List<RolesDTO>>() {});
 
             JwtToken jwtToken = new JwtToken();
             jwtToken.setId(user.get().getId().toString());
@@ -224,4 +219,9 @@ public class AuthServiceImpl implements AuthService {
                 .toList();
     }
 
+
+
+
+
 }
+

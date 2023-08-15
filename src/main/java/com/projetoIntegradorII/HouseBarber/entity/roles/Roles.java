@@ -1,12 +1,10 @@
-package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
+package com.projetoIntegradorII.HouseBarber.entity.roles;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
-
-
 
 @Builder
 @Entity
