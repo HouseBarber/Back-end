@@ -3,6 +3,7 @@ package com.projetoIntegradorII.HouseBarber.controller.authentication;
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.TokenRecoveryDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.service.authentication.AuthService;
 import com.projetoIntegradorII.HouseBarber.service.authentication.PasswordResetService;
 
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,6 +79,7 @@ public class AuthController {
         InfoDTO<TokenRecoveryDTO> infoDTO = passwordResetService.validToken(token);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
+
     @PostMapping(value = "register")
     @ApiOperation(value = "Register user", notes = "" +
             "Returns registration information for the user, along with the permissions attached to the user.")
