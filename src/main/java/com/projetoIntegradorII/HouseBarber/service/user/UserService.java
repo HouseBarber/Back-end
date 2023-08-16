@@ -6,5 +6,5 @@ import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 public interface UserService {
     InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO);
 
-    InfoDTO<UserAuthDTO> getUserById(Long id);
+    UserAuthDTO getUserById(Long id);
 }

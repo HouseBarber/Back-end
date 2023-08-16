@@ -64,22 +64,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public InfoDTO<UserAuthDTO> getUserById(Long id) {
-        InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
+    public UserAuthDTO getUserById(Long id) {
+        UserAuthDTO user = new UserAuthDTO();
         try {
             Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
             userIsPresent(userAuthOptional,id);
             ModelMapper modelMapper = new ModelMapper();
 
-            UserAuthDTO userAuthDTO = modelMapper.map(userAuthOptional.get(),UserAuthDTO.class);
-
-            infoDTO.setObject(userAuthDTO);
-            infoDTO.setStatus(HttpStatus.OK);
+            user = modelMapper.map(userAuthOptional.get(),UserAuthDTO.class);
 
         } catch (Exception e){
             throw new InfoException("Ocorreu um erro ao buscar o usuário", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return infoDTO;
+        return user;
     }
 
     private void validateUserUpdateInfo(UserAuthDTO userAuthDTO) {

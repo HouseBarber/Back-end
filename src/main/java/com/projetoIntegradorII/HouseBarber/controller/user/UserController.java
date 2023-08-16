@@ -35,15 +35,15 @@ public class UserController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/{id}")
     @ApiOperation(value = "Busca todas as Roles", notes = "Encontra todos os roles sem filtragem alguma")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<UserAuthDTO>> getUserById(@PathVariable Long id){
-        InfoDTO<UserAuthDTO> infoDTO = userService.getUserById(id);
-        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    public ResponseEntity<UserAuthDTO> getUserById(@PathVariable Long id){
+        UserAuthDTO userAuthDTO = userService.getUserById(id);
+        return ResponseEntity.ok().body(userAuthDTO);
     }
 
 }
