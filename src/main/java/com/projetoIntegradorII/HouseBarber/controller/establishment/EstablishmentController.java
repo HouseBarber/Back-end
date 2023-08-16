@@ -39,7 +39,5 @@ public class EstablishmentController {
         InfoDTO<EstablishmentDTO> infoDTO = establishmentService.creatEstablishment(establishmentDTO);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
-
-    
     
 }

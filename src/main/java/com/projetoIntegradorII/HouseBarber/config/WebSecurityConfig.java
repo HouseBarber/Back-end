@@ -75,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/actuator/**",
                     "/favicon.ico",
                     "/v1/auth/**",
-                    "/v1/establish/**",
                     "/v1/user/changePassword",
                     "/v1/roles/**",
                     "/configuration/ui",
@@ -83,7 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/configuration/security",
                     "/swagger-ui/**", "/webjars/**",
                     "/logs/quarentena")
-                    
             .permitAll()
             .anyRequest().authenticated()
             .and().cors().configurationSource(request -> corsConfiguration).and().csrf().disable()
