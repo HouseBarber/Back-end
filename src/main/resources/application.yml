@@ -8,8 +8,8 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://localhost:3306/barbearia
-    username: aluno
-    password: mysql
+    username: root
+    password: 
   jpa:
     show-sql: true
     hibernate.ddl-auto: update

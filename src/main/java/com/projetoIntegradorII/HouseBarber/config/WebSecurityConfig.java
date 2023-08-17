@@ -68,6 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers(
                     "/",
+                    "/imagens",
+                    "/imagens/**",
+                    "/images",
+                    "/images/**",
                     "/_ah/*",
                     "/actuator",
                     "/actuator/**",
@@ -77,7 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/v1/user/changePassword",
                     "/v1/user/**",
                     "/v1/roles/**",
-                    "/v1/image/**",
                     "/v1/address/**",
                     "/configuration/ui",
                     "/swagger-resources/**", "/csrf",
