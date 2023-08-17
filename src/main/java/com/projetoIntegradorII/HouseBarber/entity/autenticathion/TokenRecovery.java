@@ -1,6 +1,5 @@
 package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
 import lombok.*;

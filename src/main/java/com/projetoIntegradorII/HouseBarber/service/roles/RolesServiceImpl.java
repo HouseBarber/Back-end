@@ -2,7 +2,6 @@ package com.projetoIntegradorII.HouseBarber.service.roles;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
