@@ -52,6 +52,15 @@ public class UserImageServiceImpl  implements UserImageService{
         return null;
     }
 
+    @Override
+    public UserImageDTO getImageByUserId(Long userId) {
+        UserImage userImage = userImageRepository.findByUserId(userId);
+        if (userImage != null) {
+            return convertToDTO(userImage);
+        }
+        return null;
+    }
+
     private UserImageDTO convertToDTO(UserImage userImage) {
         UserImageDTO userImageDTO = new UserImageDTO();
         userImageDTO.setId(userImage.getId());

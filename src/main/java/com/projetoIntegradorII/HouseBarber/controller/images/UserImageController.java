@@ -42,6 +42,17 @@ public class UserImageController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<byte[]> getImageByUserId(@PathVariable Long userId) {
+        UserImageDTO userImageDTO = userImageService.getImageByUserId(userId);
+        if (userImageDTO != null) {
+            return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(userImageDTO.getDataImage());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteImage(@PathVariable Long id) {
         userImageService.deleteImage(id);

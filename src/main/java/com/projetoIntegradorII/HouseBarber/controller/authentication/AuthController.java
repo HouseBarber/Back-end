@@ -90,4 +90,6 @@ public class AuthController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
+    
+
 }
