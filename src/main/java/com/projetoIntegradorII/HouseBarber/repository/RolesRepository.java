@@ -1,6 +1,6 @@
 package com.projetoIntegradorII.HouseBarber.repository;
 
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
