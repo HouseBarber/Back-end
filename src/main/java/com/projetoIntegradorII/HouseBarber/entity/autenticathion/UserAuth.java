@@ -28,7 +28,7 @@ public class UserAuth extends Auditable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "name", nullable = false, unique = true)
