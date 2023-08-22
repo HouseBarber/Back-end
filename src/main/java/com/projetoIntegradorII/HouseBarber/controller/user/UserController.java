@@ -1,7 +1,6 @@
 package com.projetoIntegradorII.HouseBarber.controller.user;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
-import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.service.user.UserService;
 import io.swagger.annotations.Api;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/user")
