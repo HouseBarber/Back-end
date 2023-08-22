@@ -68,8 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers(
                     "/",
-                    "/imagens",
-                    "/imagens/**",
                     "/images",
                     "/images/**",
                     "/_ah/*",
