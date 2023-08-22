@@ -8,13 +8,16 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://localhost:3306/barbearia
-    username: root
-    password: barbearia
+    password: root
+    password: 
   jpa:
     show-sql: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
+    defer-datasource-initialization: true
+  sql:
+      init:
+          mode: always
   mail:
     host: smtp.gmail.com
     port: 587

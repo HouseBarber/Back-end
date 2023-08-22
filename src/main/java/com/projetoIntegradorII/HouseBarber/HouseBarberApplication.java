@@ -15,9 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class HouseBarberApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(HouseBarberApplication.class, args);
-
 	}
 
 }

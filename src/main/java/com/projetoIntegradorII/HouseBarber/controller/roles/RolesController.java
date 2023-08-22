@@ -28,9 +28,9 @@ public class RolesController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<List<RolesDTO>>> getRoles(){
-        InfoDTO<List<RolesDTO>> infoDTO = rolesService.getAllRoles();
-        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    public ResponseEntity<List<RolesDTO>> getRoles(){
+        List<RolesDTO> roles = rolesService.getAllRoles();
+        return ResponseEntity.ok().body(roles);
     }
 
 }

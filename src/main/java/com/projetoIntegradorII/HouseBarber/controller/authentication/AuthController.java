@@ -42,7 +42,7 @@ public class AuthController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
-        @PostMapping(value = "recoveryPassword")
+    @PostMapping(value = "recoveryPassword")
     @ApiOperation(value = "Envia email para alterar senha", notes = "" +
             "Altera a senha pelo token")
     @ApiResponses(value = {
@@ -77,6 +77,7 @@ public class AuthController {
         InfoDTO<TokenRecoveryDTO> infoDTO = passwordResetService.validToken(token);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
+
     @PostMapping(value = "register")
     @ApiOperation(value = "Register user", notes = "" +
             "Returns registration information for the user, along with the permissions attached to the user.")
@@ -89,6 +90,6 @@ public class AuthController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
-
+    
 
 }
