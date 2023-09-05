@@ -52,7 +52,8 @@ public class UserAuth extends Auditable {
     @Column(name = "dateBirth")
     private Date dateBirth;
 
-    @Column(name = "description")
+    @Lob
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Column(name = "telephone")
