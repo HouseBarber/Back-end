@@ -9,8 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
+import com.projetoIntegradorII.HouseBarber.entity.address.Address;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
+import com.projetoIntegradorII.HouseBarber.repository.address.AddressRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,17 +36,30 @@ public class UserServiceImpl implements UserService {
 
     private final UserAuthRepository userAuthRepository;
 
+    private final AddressRepository addressRepository;
+
     private final ObjectMapper objectMapper;
 
     @Override
     public InfoDTO<UserAuthDTO> update(Long id, UserAuthDTO userAuthDTO) {
         InfoDTO<UserAuthDTO> infoDTO = new InfoDTO<>();
-
+        
         Optional<UserAuth> userAuthOptional = userAuthRepository.findById(id);
-
+        
         if (userAuthOptional.isPresent()) {
             UserAuth userAuth = userAuthOptional.get();
             mapUserAuthDTOToUserAuth(userAuthDTO, userAuth);
+
+            AddressDTO addressDTO = userAuthDTO.getAddress();
+            if (addressDTO != null) {
+                Address address = userAuth.getAddress(); 
+                if (address == null) {
+                    address = new Address(); 
+                }
+                mapAddressDTOToAddress(addressDTO, address); 
+                addressRepository.save(address);
+                userAuth.setAddress(address);
+            } 
 
             userAuthRepository.saveAndFlush(userAuth);
 
@@ -56,6 +71,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return infoDTO;
+    }
+
+    private void mapAddressDTOToAddress(AddressDTO addressDTO, Address address) {
+        address.setId(addressDTO.getId());
+        address.setCep(addressDTO.getCep());
+        address.setState(addressDTO.getState());
+        address.setCity(addressDTO.getCity());
+        address.setStreet(addressDTO.getStreet());
+        address.setNeighborhood(addressDTO.getNeighborhood());
+        address.setComplement(addressDTO.getComplement());
+        address.setNumber(addressDTO.getNumber());
     }
 
     @Override
