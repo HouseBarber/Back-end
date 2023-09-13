@@ -3,9 +3,11 @@ package com.projetoIntegradorII.HouseBarber.dto.authentication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,10 +24,15 @@ public class UserAuthDTO {
     private String email;
     private String telephone;
     private List<RolesDTO> roles;
+
     @JsonIgnore
     private TokenRecoveryDTO tokenRecovery;
-    
 
+    private String gender;
+    private Date dateBirth;
+    private String description;
+
+    private AddressDTO address;
     private String createdBy;
     private String lastModifiedBy;
     private Boolean active;

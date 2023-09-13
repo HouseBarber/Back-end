@@ -55,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http)
         throws Exception {
@@ -69,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers(
                     "/",
+                    "/images",
+                    "/images/**",
                     "/_ah/*",
                     "/actuator",
                     "/actuator/**",
@@ -76,7 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/favicon.ico",
                     "/v1/auth/**",
                     "/v1/user/changePassword",
+                    "/v1/user/**",
                     "/v1/roles/**",
+                    "/v1/address/**",
                     "/configuration/ui",
                     "/swagger-resources/**", "/csrf",
                     "/configuration/security",

@@ -2,9 +2,8 @@ package com.projetoIntegradorII.HouseBarber.service.roles;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.Roles;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,33 +23,19 @@ public class RolesServiceImpl implements RolesService{
     private final RolesRepository rolesRepository;
 
     private final ObjectMapper objectMapper;
-    @Override
-    public InfoDTO<List<RolesDTO>> getAllRoles() {
-        InfoDTO<List<RolesDTO>> infoDTO = new InfoDTO<List<RolesDTO>>();
-        try {
 
+    @Override
+    public List<RolesDTO> getAllRoles() {
+        try{
             List<Roles> allRoles = rolesRepository.findAll();
             List<RolesDTO> roles = objectMapper.convertValue(allRoles, new TypeReference<List<RolesDTO>>() {});
-
-
-            infoDTO.setMessage("Sucesso ao buscar roles");
-            infoDTO.setStatus(HttpStatus.OK);
-            infoDTO.setObject(roles);
-
-            return infoDTO;
-
-        } catch (InfoException e) {
-            e.printStackTrace();
-            infoDTO.setSuccess(false);
-            infoDTO.setStatus(HttpStatus.BAD_REQUEST);
-            infoDTO.setMessage(e.getMessage());
-            return infoDTO;
-        } catch (Exception e) {
-            e.printStackTrace();
-            infoDTO.setSuccess(false);
-            infoDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            infoDTO.setMessage("Erro ao buscar roles");
-            return infoDTO;
-        }
+            if (roles.isEmpty()) {
+                throw new InfoException("LIST ROLES IS EMPY", HttpStatus.BAD_REQUEST);
+            }
+            return roles;
+        } catch (Exception e){
+            String errorMessage = "Erro ao buscar as Roles: " + e.getMessage();
+            throw new InfoException(errorMessage, HttpStatus.BAD_REQUEST);
+        }   
     }
 }

@@ -1,15 +1,16 @@
 package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
+import com.projetoIntegradorII.HouseBarber.entity.address.Address;
+import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
+
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-
 
 @Builder
 @Entity
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "user_auth")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "hibernateLazyInitializer", "handler" })
 public class UserAuth extends Auditable {
 
     @Id
@@ -27,7 +28,7 @@ public class UserAuth extends Auditable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -45,13 +46,25 @@ public class UserAuth extends Auditable {
     @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
     private TokenRecovery tokenRecovery;
 
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "dateBirth")
+    private Date dateBirth;
+
+    @Lob
+    @Column(name = "description", length = 1000)
+    private String description;
+
     @Column(name = "telephone")
     private String telephone;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
+    private Address address;
+    
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "users_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Roles> roles = new ArrayList<>();
 
 }
