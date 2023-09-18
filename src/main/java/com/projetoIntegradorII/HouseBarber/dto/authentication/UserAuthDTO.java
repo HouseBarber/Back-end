@@ -7,7 +7,6 @@ import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -29,7 +28,7 @@ public class UserAuthDTO {
     private TokenRecoveryDTO tokenRecovery;
 
     private String gender;
-    private Date dateBirth;
+    private LocalDateTime dateBirth;
     private String description;
 
     private AddressDTO address;
