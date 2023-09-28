@@ -31,17 +31,6 @@ public class UserImageController {
         return ResponseEntity.ok("Imagem do usuário salva com sucesso.");
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-        UserImageDTO userImageDTO = userImageService.getImage(id);
-        if (userImageDTO != null) {
-            return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(userImageDTO.getDataImage());
-        }
-        return ResponseEntity.notFound().build();
-    }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<byte[]> getImageByUserId(@PathVariable Long userId) {
         UserImageDTO userImageDTO = userImageService.getImageByUserId(userId);

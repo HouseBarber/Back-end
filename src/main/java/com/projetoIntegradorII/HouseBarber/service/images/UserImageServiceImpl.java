@@ -1,19 +1,32 @@
 package com.projetoIntegradorII.HouseBarber.service.images;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.images.UserImageDTO;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.entity.images.UserImage;
+import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import com.projetoIntegradorII.HouseBarber.repository.images.UserImageRepository;
 
 import io.jsonwebtoken.io.IOException;
+import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserImageServiceImpl  implements UserImageService{
 
     @Autowired
@@ -22,19 +35,30 @@ public class UserImageServiceImpl  implements UserImageService{
     @Autowired
     private UserAuthRepository userAuthRepository;
 
+    private final ObjectMapper objectMapper;
+
     @Override
-    public UserImageDTO uploadImage(Long userId, MultipartFile file) throws IOException {
-        UserImage userImage = new UserImage();
-        userImage.setUser(userAuthRepository.findById(userId).orElse(null));
+    public UserImageDTO uploadImage(Long userId, MultipartFile file){
+        Optional<UserImage> userImage = userImageRepository.findByUserAuthId(userId);
         try {
-            userImage.setDataImage(file.getBytes());
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
+            Optional<UserAuth> user = userAuthRepository.findById(userId);
+            if(user.isEmpty()){
+                throw new InfoException("USUÁRIO NÃO ENCONTRADO", HttpStatus.BAD_REQUEST);
+            }
+            if(userImage.isPresent()){
+                userImage.get().setDataImage(file.getBytes());
+                userImageRepository.save(userImage.get());
+                return objectMapper.convertValue(userImage.get(), new TypeReference<UserImageDTO>() {});
+            }
+            UserImage newUserImage = UserImage.builder()
+                .dataImage(file.getBytes())
+                .userAuth(user.get())
+                .build();
+            userImageRepository.save(newUserImage);
+            return objectMapper.convertValue(newUserImage, new TypeReference<UserImageDTO>() {});
+        } catch (Exception e) {
+            throw new InfoException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        userImage = userImageRepository.save(userImage);
-
-        return convertToDTO(userImage);
     }
 
     @Override
@@ -43,30 +67,12 @@ public class UserImageServiceImpl  implements UserImageService{
     }
 
     @Override
-    public UserImageDTO getImage(Long id) {
-        Optional<UserImage> userImageOptional = userImageRepository.findById(id);
-        if (userImageOptional.isPresent()) {
-            UserImage userImage = userImageOptional.get();
-            return convertToDTO(userImage);
-        }
-        return null;
-    }
-
-    @Override
     public UserImageDTO getImageByUserId(Long userId) {
-        UserImage userImage = userImageRepository.findByUserId(userId);
-        if (userImage != null) {
-            return convertToDTO(userImage);
+        Optional<UserImage> userImage = userImageRepository.findByUserAuthId(userId);
+        if (userImage.isPresent()) {
+            return objectMapper.convertValue(userImage, new TypeReference<UserImageDTO>() {});
         }
         return null;
-    }
-
-    private UserImageDTO convertToDTO(UserImage userImage) {
-        UserImageDTO userImageDTO = new UserImageDTO();
-        userImageDTO.setId(userImage.getId());
-        userImageDTO.setUserId(userImage.getUser().getId());
-        userImageDTO.setDataImage(userImage.getDataImage());
-        return userImageDTO;
     }
     
 }
