@@ -1,7 +1,5 @@
 package com.projetoIntegradorII.HouseBarber.entity.images;
 
-import java.util.Optional;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,15 +9,23 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Builder
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "user_image")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "hibernateLazyInitializer", "handler" })
 public class UserImage {
     
     @Id

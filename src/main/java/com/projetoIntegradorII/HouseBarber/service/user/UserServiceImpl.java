@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
             user = modelMapper.map(userAuthOptional.get(), UserAuthDTO.class);
 
         } catch (Exception e) {
-            throw new InfoException("Ocorreu um erro ao buscar o usuário", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new InfoException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return user;
     }

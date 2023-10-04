@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
+import com.projetoIntegradorII.HouseBarber.dto.images.UserImageDTO;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -30,6 +32,9 @@ public class UserAuthDTO {
     private String gender;
     private LocalDateTime dateBirth;
     private String description;
+
+    @JsonIgnore
+    private UserImageDTO userImage;
 
     private AddressDTO address;
     private String createdBy;
