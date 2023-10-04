@@ -4,13 +4,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
+import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
 import com.projetoIntegradorII.HouseBarber.dto.establishment.EstablishmentDTO;
 import com.projetoIntegradorII.HouseBarber.entity.establishment.Establishment;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.establishment.EstablishmentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -20,6 +25,8 @@ import javax.transaction.Transactional;
 public class EstablishmentServiceImpl implements EstablishmentService{
     
     private final EstablishmentRepository establishmentRepository;
+
+    private final ObjectMapper objectMapper;
 
     @Override
     public InfoDTO<EstablishmentDTO> createEstablishment(EstablishmentDTO establishmentDTO) {
@@ -72,11 +79,28 @@ public class EstablishmentServiceImpl implements EstablishmentService{
 
     @Override
     public InfoDTO<List<EstablishmentDTO>> findAllEstablishment(Long idUser) {
+        InfoDTO<List<EstablishmentDTO>> infoDTO = new InfoDTO<>();
+        try {
 
-        
-
-
-        return null;
+            Optional<List<Establishment>> establishmentList = establishmentRepository.findByUserAuthId(idUser);
+            
+            if(establishmentList.isPresent()){
+                infoDTO.setSuccess(true);
+                infoDTO.setStatus(HttpStatus.BAD_REQUEST);
+                return infoDTO;
+            }
+            List<EstablishmentDTO> establishmentsDTO = objectMapper.convertValue(establishmentList, new TypeReference<List<EstablishmentDTO>>() {});
+            infoDTO.setSuccess(true);
+            infoDTO.setStatus(HttpStatus.OK);
+            infoDTO.setObject(establishmentsDTO);
+        }  catch (InfoException e){
+            infoDTO.setSuccess(false);
+            infoDTO.setStatus(HttpStatus.BAD_REQUEST);
+            infoDTO.setMessage(e.getMessage());
+            return infoDTO;
+        }
+       
+        return infoDTO;
     }
     
 }

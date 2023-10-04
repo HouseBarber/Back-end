@@ -42,7 +42,7 @@ public class Establishment {
     private String time;
 
     @ManyToOne
-    @JoinColumn(name="user_auth", nullable=false)
+    @JoinColumn(name = "userAuth", referencedColumnName = "id")
     private UserAuth userAuth;
 
     @Column(name = "daysOpens", nullable = false)

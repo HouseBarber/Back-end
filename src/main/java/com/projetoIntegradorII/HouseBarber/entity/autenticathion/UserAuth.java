@@ -46,7 +46,7 @@ public class UserAuth extends Auditable {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy="establishment")
+    @OneToMany(mappedBy = "userAuth")
     private List<Establishment> establishment;
 
     @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)

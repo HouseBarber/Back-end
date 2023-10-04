@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/v1/user/**",
                     "/v1/roles/**",
                     "/v1/address/**",
+                    "/v1/establish/**",
                     "/configuration/ui",
                     "/swagger-resources/**", "/csrf",
                     "/configuration/security",
