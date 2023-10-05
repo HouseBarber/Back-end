@@ -17,30 +17,42 @@ import java.util.List;
 public class UserAuthDTO {
 
     private Long id;
+
     private String username;
+
     private String password;
+
     private String name;
+
     private String cpf;
+
     private String cnpj;
+
     private String email;
+
     private String telephone;
+
     private List<RolesDTO> roles;
 
     @JsonIgnore
     private TokenRecoveryDTO tokenRecovery;
 
     private String gender;
+
     private LocalDateTime dateBirth;
+
     private String description;
 
-    @JsonIgnore
-    private UserImageDTO userImage;
-
     private AddressDTO address;
+
     private String createdBy;
+
     private String lastModifiedBy;
+
     private Boolean active;
+
     private LocalDateTime createdDate;
+
     private LocalDateTime lastModifiedDate;
 
 }

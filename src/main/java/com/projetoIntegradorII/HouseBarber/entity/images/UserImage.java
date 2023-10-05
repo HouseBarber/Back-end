@@ -32,10 +32,10 @@ public class UserImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne()
-    @JoinColumn(name = "user_auth", referencedColumnName = "id")
-    private UserAuth userAuth;
-
     @Lob
     private byte[] dataImage;
+
+    @OneToOne()
+    @JoinColumn(name = "user_auth_id")
+    private UserAuth userAuth;
 }

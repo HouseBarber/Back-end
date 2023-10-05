@@ -12,9 +12,9 @@ import lombok.Data;
 public class UserImageDTO {
 
     private Long id;
-    
-    private UserAuthDTO userAuth;
 
     private byte[] dataImage;
+
+    private UserAuthDTO userAuth;
     
 }

@@ -65,11 +65,8 @@ public class UserImageServiceImpl  implements UserImageService{
     @Override
     public UserImageDTO getImageByUserId(Long userId) {
         Optional<UserImage> userImage = userImageRepository.findByUserAuthId(userId);
-        if (userImage.isPresent()) {
-            var batata = objectMapper.convertValue(userImage.get().getUserAuth(), new TypeReference<UserAuthDTO>() {});
-            return objectMapper.convertValue(userImage.get(), new TypeReference<UserImageDTO>() {});
-        }
-        return null;
+        return userImage.<UserImageDTO>map(image -> objectMapper.convertValue(image, new TypeReference<>() {
+        })).orElse(null);
     }
     
 }

@@ -61,9 +61,6 @@ public class UserAuth extends Auditable {
     @Column(name = "telephone")
     private String telephone;
 
-    @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
-    private UserImage userImage;
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private Address address;
