@@ -8,12 +8,16 @@ import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.LoginDTO;
 import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
+import com.projetoIntegradorII.HouseBarber.entity.images.UserImage;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import com.projetoIntegradorII.HouseBarber.repository.images.UserImageRepository;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtToken;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtTokenUtil;
 import com.projetoIntegradorII.HouseBarber.security.Response.JwtResponse;
+import com.projetoIntegradorII.HouseBarber.service.Utils.StringUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -34,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenUtil jwtUtils;
     private final UserAuthRepository userAuthRepository;
     private final RolesRepository rolesRepository;
+    private final UserImageRepository userImageRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -125,7 +130,7 @@ public class AuthServiceImpl implements AuthService {
             UserAuth newUser = UserAuth.builder()
                     .username(userAuthDTO.getUsername())
                     .cpf(userAuthDTO.getCpf())
-                    .cnpj(userAuthDTO.getCnpj())
+                    .cnpj(!StringUtil.isNullOrEmpty(userAuthDTO.getCnpj()) ? userAuthDTO.getCnpj() : null)
                     .email(userAuthDTO.getEmail())
                     .name(userAuthDTO.getName())
                     .telephone(userAuthDTO.getTelephone())
