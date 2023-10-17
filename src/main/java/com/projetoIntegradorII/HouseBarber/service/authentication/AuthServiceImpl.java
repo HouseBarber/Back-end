@@ -8,7 +8,6 @@ import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.authentication.LoginDTO;
 import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
-import com.projetoIntegradorII.HouseBarber.entity.images.UserImage;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
@@ -38,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenUtil jwtUtils;
     private final UserAuthRepository userAuthRepository;
     private final RolesRepository rolesRepository;
-    private final UserImageRepository userImageRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -47,8 +45,7 @@ public class AuthServiceImpl implements AuthService {
         InfoDTO<LoginDTO> infoDTO = new InfoDTO<>();
 
         try {
-            // Validações -> Mesmo que seja realizada no front, para que não ocorra alguma falha
-            // E o usuário manipule os dados, é realizado a verificação no Back-End também.
+
             if (userAuthDTO.getPassword().equals("")) {
                 throw new InfoException("MESSAGES.PASSWORD_REQUIRED", HttpStatus.BAD_REQUEST);
             }
@@ -130,7 +127,6 @@ public class AuthServiceImpl implements AuthService {
             UserAuth newUser = UserAuth.builder()
                     .username(userAuthDTO.getUsername())
                     .cpf(userAuthDTO.getCpf())
-                    .cnpj(!StringUtil.isNullOrEmpty(userAuthDTO.getCnpj()) ? userAuthDTO.getCnpj() : null)
                     .email(userAuthDTO.getEmail())
                     .name(userAuthDTO.getName())
                     .telephone(userAuthDTO.getTelephone())
@@ -180,12 +176,8 @@ public class AuthServiceImpl implements AuthService {
             throw new InfoException("MESSAGES.PASSWORD_LENGHT_MAX", HttpStatus.BAD_REQUEST);
         }
 
-        if(userAuthDTO.getCpf().equals("") && userAuthDTO.getCnpj().equals("")) {
+        if(userAuthDTO.getCpf().equals("")) {
             throw new InfoException("O usuario deve possuir CPF ou CNPJ", HttpStatus.BAD_REQUEST);
-        }
-
-        if(!userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
-            throw new InfoException("O usuario deve possuir somente CPF ou CNPJ", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -193,7 +185,6 @@ public class AuthServiceImpl implements AuthService {
         boolean validateUserByUsername = userAuthRepository.existsByUsername(userAuthDTO.getUsername());
         boolean validateUserByEmail = userAuthRepository.existsByEmail(userAuthDTO.getEmail());
         boolean validateUserByCpf = userAuthRepository.existsByCpf(userAuthDTO.getCpf());
-        boolean validateUserByCnpj = userAuthRepository.existsByCnpj(userAuthDTO.getCnpj());
 
         if (validateUserByUsername) {
             throw new InfoException("MESSAGES.USER_ALREADY_EXISTS", HttpStatus.UNAUTHORIZED);
@@ -201,15 +192,8 @@ public class AuthServiceImpl implements AuthService {
         if (validateUserByEmail) {
             throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
         }
-        if(userAuthDTO.getCnpj().equals("")){
-            if (validateUserByCpf) {
-                throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
-            }
-        }
-        if (userAuthDTO.getCpf().equals("")) {
-            if (validateUserByCnpj) {
-                throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
-            }
+        if (validateUserByCpf) {
+            throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -223,10 +207,6 @@ public class AuthServiceImpl implements AuthService {
                 .filter(role -> role.getId().equals(roleId))
                 .toList();
     }
-
-
-
-
 
 }
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projetoIntegradorII.HouseBarber.dto.address.AddressDTO;
-import com.projetoIntegradorII.HouseBarber.dto.images.UserImageDTO;
 
 import lombok.Data;
 
