@@ -41,6 +41,4 @@ public class Address extends Auditable {
     @Column(name = "complement")
     private String complement;
 
-    @OneToOne(mappedBy = "address")
-    private UserAuth userAuth;
 }
