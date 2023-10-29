@@ -2,11 +2,13 @@ package com.projetoIntegradorII.HouseBarber.entity.establishment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 
@@ -24,6 +26,10 @@ public class Establishment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserAuth user;
 
     @Column(name = "nameFantasy", nullable = true)
     private String name;

@@ -3,6 +3,7 @@ package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
 import com.projetoIntegradorII.HouseBarber.entity.address.Address;
+import com.projetoIntegradorII.HouseBarber.entity.establishment.Establishment;
 import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 
 import lombok.*;
@@ -45,6 +46,9 @@ public class UserAuth extends Auditable {
 
     @OneToOne(mappedBy = "userAuth", fetch = FetchType.EAGER)
     private TokenRecovery tokenRecovery;
+
+    @OneToMany(mappedBy = "user")
+    private List<Establishment> establishments;
 
     @Column(name = "gender")
     private String gender;
