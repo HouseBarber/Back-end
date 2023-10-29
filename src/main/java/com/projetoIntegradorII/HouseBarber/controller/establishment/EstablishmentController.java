@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +49,8 @@ public class EstablishmentController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<Page<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser) {
-        InfoDTO<Page<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser);
+    public ResponseEntity<InfoDTO<Page<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser,@PageableDefault(size = 10) Pageable pageable) {
+        InfoDTO<Page<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser, pageable);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     

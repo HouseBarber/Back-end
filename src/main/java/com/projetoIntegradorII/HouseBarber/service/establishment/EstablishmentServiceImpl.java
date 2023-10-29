@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -80,7 +81,7 @@ public class EstablishmentServiceImpl implements EstablishmentService{
     }
 
     @Override
-    public InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId) {
+    public InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId, Pageable pageable) {
         InfoDTO<Page<EstablishmentDTO>> infoDTO = new InfoDTO<>();
 
         try {
