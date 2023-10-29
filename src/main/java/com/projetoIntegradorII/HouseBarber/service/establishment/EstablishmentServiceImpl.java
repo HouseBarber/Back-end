@@ -2,7 +2,9 @@ package com.projetoIntegradorII.HouseBarber.service.establishment;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projetoIntegradorII.HouseBarber.dto.authentication.RolesDTO;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
+import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,14 @@ import com.projetoIntegradorII.HouseBarber.repository.establishment.Establishmen
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class EstablishmentServiceImpl implements EstablishmentService{
+
+    private final UserAuthRepository userAuthRepository;
     
     private final EstablishmentRepository establishmentRepository;
 
@@ -30,15 +35,15 @@ public class EstablishmentServiceImpl implements EstablishmentService{
         InfoDTO<EstablishmentDTO> infoDTO = new InfoDTO<>();
 
         try {
-            if (establishmentDTO.getName().equals("") || establishmentDTO.getName() == null){
+            if (establishmentDTO.getName().isEmpty() || establishmentDTO.getName() == null){
                 throw new InfoException("NOME REQUERIDO", HttpStatus.BAD_REQUEST);
             }
 
-            if (establishmentDTO.getContact().equals("") || establishmentDTO.getContact() == null){
+            if (establishmentDTO.getContact().isEmpty() || establishmentDTO.getContact() == null){
                 throw new InfoException("CONTATO REQUERIDO", HttpStatus.BAD_REQUEST);
             }
 
-            if (establishmentDTO.getCnpj().equals("") || establishmentDTO.getCnpj() == null){
+            if (establishmentDTO.getCnpj().isEmpty() || establishmentDTO.getCnpj() == null){
                 throw new InfoException("CNPJ É NECESSARIO", HttpStatus.BAD_REQUEST);
             }
 
@@ -72,18 +77,19 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             infoDTO.setMessage("Erro Interno");  
             return infoDTO;  
         }
-        
-        
-
     }
 
     @Override
-    public InfoDTO<List<EstablishmentDTO>> listEstablishment(Long userId) {
-        InfoDTO<List<EstablishmentDTO>> infoDTO = new InfoDTO<>();
+    public InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId) {
+        InfoDTO<Page<EstablishmentDTO>> infoDTO = new InfoDTO<>();
 
         try {
-            List<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUserAuthId(userId);
-            List<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<List<EstablishmentDTO>>() {});
+            Optional<UserAuth> userAuth = userAuthRepository.findById(userId);
+            if (userAuth.isEmpty()){
+                throw new InfoException("Usuario com esse Id não encontrado",HttpStatus.OK);
+            }
+            Page<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUser(userAuth.get());
+            Page<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<Page<EstablishmentDTO>>() {});
 
             infoDTO.setStatus(HttpStatus.OK);
             infoDTO.setObject(establishmentDTOS);

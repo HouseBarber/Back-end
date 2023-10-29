@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +47,8 @@ public class EstablishmentController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<List<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser) {
-        InfoDTO<List<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser);
+    public ResponseEntity<InfoDTO<Page<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser) {
+        InfoDTO<Page<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     
