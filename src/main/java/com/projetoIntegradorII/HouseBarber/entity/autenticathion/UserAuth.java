@@ -9,6 +9,7 @@ import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,7 @@ public class UserAuth extends Auditable {
     private String gender;
 
     @Column(name = "dateBirth")
-    private Date dateBirth;
+    private LocalDateTime dateBirth;
 
     @Column(name = "description")
     private String description;

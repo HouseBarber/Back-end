@@ -179,7 +179,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InfoException("O usuario deve possuir CPF ou CNPJ", HttpStatus.BAD_REQUEST);
         }
 
-        if(!userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
+        if(userAuthDTO.getCnpj() != null && !userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
             throw new InfoException("O usuario deve possuir somente CPF ou CNPJ", HttpStatus.BAD_REQUEST);
         }
     }
@@ -196,12 +196,12 @@ public class AuthServiceImpl implements AuthService {
         if (validateUserByEmail) {
             throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
         }
-        if(userAuthDTO.getCnpj().equals("")){
+        if(userAuthDTO.getCnpj() != null && userAuthDTO.getCnpj().isEmpty()){
             if (validateUserByCpf) {
                 throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
             }
         }
-        if (userAuthDTO.getCpf().equals("")) {
+        if (userAuthDTO.getCpf() != null && userAuthDTO.getCpf().isEmpty()) {
             if (validateUserByCnpj) {
                 throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
             }
