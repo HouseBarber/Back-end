@@ -1,6 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.entity.establishment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import lombok.AccessLevel;
@@ -45,6 +46,10 @@ public class Establishment {
 
     @Column(name = "time", nullable = false)
     private String time;
+
+    @ManyToOne
+    @JoinColumn(name = "userAuth", referencedColumnName = "id")
+    private UserAuth userAuth;
 
     @Column(name = "daysOpens", nullable = false)
     private String daysOpens;
