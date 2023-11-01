@@ -89,7 +89,7 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             if (userAuth.isEmpty()){
                 throw new InfoException("Usuario com esse Id não encontrado",HttpStatus.OK);
             }
-            List<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUser(userAuth.get());
+            List<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUserI(userId);
             List<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<List<EstablishmentDTO>>() {});
 
             infoDTO.setStatus(HttpStatus.OK);

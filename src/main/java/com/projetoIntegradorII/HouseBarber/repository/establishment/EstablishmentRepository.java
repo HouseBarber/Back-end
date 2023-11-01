@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface EstablishmentRepository extends JpaRepository<Establishment, Long>{
 
-    List<Establishment> findEstablishmentsByUser(UserAuth user);
+    List<Establishment> findEstablishmentsByUserId(Long userId);
 }

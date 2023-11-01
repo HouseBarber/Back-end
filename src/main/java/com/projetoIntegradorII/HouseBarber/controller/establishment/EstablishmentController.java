@@ -49,8 +49,8 @@ public class EstablishmentController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<List<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser) {
-        InfoDTO<List<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser);
+    public ResponseEntity<InfoDTO<List<EstablishmentDTO>>> listEstabelishment(@PathVariable Long userId) {
+        InfoDTO<List<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(userId);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     
