@@ -22,7 +22,7 @@ import com.projetoIntegradorII.HouseBarber.service.establishment.EstablishmentSe
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/establish")
+@RequestMapping("/v1/establishment")
 @Api(tags = {"Establishment Controller"})
 @RequiredArgsConstructor
 @Slf4j
@@ -42,15 +42,15 @@ public class EstablishmentController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
-    @GetMapping(value = "/{idUser}")
+    @GetMapping(value = "/{userId}")
     @ApiOperation(value = "Criar Estabelecimento", notes = "" +
             "Recebe dados")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<Page<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser,@PageableDefault(size = 10) Pageable pageable) {
-        InfoDTO<Page<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser, pageable);
+    public ResponseEntity<InfoDTO<List<EstablishmentDTO>>> listEstabelishment(@PathVariable Long idUser) {
+        InfoDTO<List<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(idUser);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
     

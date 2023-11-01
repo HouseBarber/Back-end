@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface EstablishmentRepository extends JpaRepository<Establishment, Long>{
 
-    Page<Establishment> findEstablishmentsByUser(UserAuth user, Pageable pageable);
+    List<Establishment> findEstablishmentsByUser(UserAuth user);
 }

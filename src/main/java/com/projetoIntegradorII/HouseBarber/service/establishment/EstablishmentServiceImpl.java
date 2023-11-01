@@ -81,16 +81,16 @@ public class EstablishmentServiceImpl implements EstablishmentService{
     }
 
     @Override
-    public InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId, Pageable pageable) {
-        InfoDTO<Page<EstablishmentDTO>> infoDTO = new InfoDTO<>();
+    public InfoDTO<List<EstablishmentDTO>> listEstablishment(Long userId) {
+        InfoDTO<List<EstablishmentDTO>> infoDTO = new InfoDTO<>();
 
         try {
             Optional<UserAuth> userAuth = userAuthRepository.findById(userId);
             if (userAuth.isEmpty()){
                 throw new InfoException("Usuario com esse Id não encontrado",HttpStatus.OK);
             }
-            Page<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUser(userAuth.get(),pageable);
-            Page<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<Page<EstablishmentDTO>>() {});
+            List<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUser(userAuth.get());
+            List<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<List<EstablishmentDTO>>() {});
 
             infoDTO.setStatus(HttpStatus.OK);
             infoDTO.setObject(establishmentDTOS);
