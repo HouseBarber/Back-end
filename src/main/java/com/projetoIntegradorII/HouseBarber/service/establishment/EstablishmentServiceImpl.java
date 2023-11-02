@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.projetoIntegradorII.HouseBarber.repository.establishment.Establishmen
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,17 +83,24 @@ public class EstablishmentServiceImpl implements EstablishmentService{
     }
 
     @Override
-    public InfoDTO<List<EstablishmentDTO>> listEstablishment(Long userId) {
-        InfoDTO<List<EstablishmentDTO>> infoDTO = new InfoDTO<>();
+    public InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId, Pageable pageable) {
+        InfoDTO<Page<EstablishmentDTO>> infoDTO = new InfoDTO<>();
 
         try {
             Optional<UserAuth> userAuth = userAuthRepository.findById(userId);
             if (userAuth.isEmpty()){
                 throw new InfoException("Usuario com esse Id não encontrado",HttpStatus.OK);
             }
-            List<Establishment> establishmentList = establishmentRepository.findEstablishmentsByUserI(userId);
-            List<EstablishmentDTO> establishmentDTOS = objectMapper.convertValue(establishmentList, new TypeReference<List<EstablishmentDTO>>() {});
-
+            Page<Establishment> establishmentPage = establishmentRepository.findEstablishmentsByUserId(userId, pageable);
+            List<EstablishmentDTO> establishmentDTOList = establishmentPage.getContent()
+                    .stream()
+                    .map(entity -> objectMapper.convertValue(entity, EstablishmentDTO.class))
+                    .toList();
+            Page<EstablishmentDTO> establishmentDTOS = new PageImpl<>(
+                    establishmentDTOList,
+                    pageable,
+                    establishmentPage.getTotalElements()
+            );
             infoDTO.setStatus(HttpStatus.OK);
             infoDTO.setObject(establishmentDTOS);
             infoDTO.setMessage("Mensagem");

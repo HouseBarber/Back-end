@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface EstablishmentRepository extends JpaRepository<Establishment, Long>{
 
-    List<Establishment> findEstablishmentsByUserId(Long userId);
+    Page<Establishment> findEstablishmentsByUserId(Long userId, Pageable pageable);
 }
