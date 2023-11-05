@@ -11,9 +11,12 @@ import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.exception.InfoException;
 import com.projetoIntegradorII.HouseBarber.repository.RolesRepository;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import com.projetoIntegradorII.HouseBarber.repository.images.UserImageRepository;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtToken;
 import com.projetoIntegradorII.HouseBarber.security.Jwt.JwtTokenUtil;
 import com.projetoIntegradorII.HouseBarber.security.Response.JwtResponse;
+import com.projetoIntegradorII.HouseBarber.service.Utils.StringUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -42,8 +45,7 @@ public class AuthServiceImpl implements AuthService {
         InfoDTO<LoginDTO> infoDTO = new InfoDTO<>();
 
         try {
-            // Validações -> Mesmo que seja realizada no front, para que não ocorra alguma falha
-            // E o usuário manipule os dados, é realizado a verificação no Back-End também.
+
             if (userAuthDTO.getPassword().equals("")) {
                 throw new InfoException("MESSAGES.PASSWORD_REQUIRED", HttpStatus.BAD_REQUEST);
             }
@@ -125,7 +127,6 @@ public class AuthServiceImpl implements AuthService {
             UserAuth newUser = UserAuth.builder()
                     .username(userAuthDTO.getUsername())
                     .cpf(userAuthDTO.getCpf())
-                    .cnpj(userAuthDTO.getCnpj())
                     .email(userAuthDTO.getEmail())
                     .name(userAuthDTO.getName())
                     .telephone(userAuthDTO.getTelephone())
@@ -175,12 +176,8 @@ public class AuthServiceImpl implements AuthService {
             throw new InfoException("MESSAGES.PASSWORD_LENGHT_MAX", HttpStatus.BAD_REQUEST);
         }
 
-        if(userAuthDTO.getCpf().equals("") && userAuthDTO.getCnpj().equals("")) {
+        if(userAuthDTO.getCpf().equals("")) {
             throw new InfoException("O usuario deve possuir CPF ou CNPJ", HttpStatus.BAD_REQUEST);
-        }
-
-        if(userAuthDTO.getCnpj() != null && !userAuthDTO.getCpf().equals("") && !userAuthDTO.getCnpj().equals("")) {
-            throw new InfoException("O usuario deve possuir somente CPF ou CNPJ", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -188,7 +185,6 @@ public class AuthServiceImpl implements AuthService {
         boolean validateUserByUsername = userAuthRepository.existsByUsername(userAuthDTO.getUsername());
         boolean validateUserByEmail = userAuthRepository.existsByEmail(userAuthDTO.getEmail());
         boolean validateUserByCpf = userAuthRepository.existsByCpf(userAuthDTO.getCpf());
-        boolean validateUserByCnpj = userAuthRepository.existsByCnpj(userAuthDTO.getCnpj());
 
         if (validateUserByUsername) {
             throw new InfoException("MESSAGES.USER_ALREADY_EXISTS", HttpStatus.UNAUTHORIZED);
@@ -196,15 +192,8 @@ public class AuthServiceImpl implements AuthService {
         if (validateUserByEmail) {
             throw new InfoException("MESSAGES.EMAIL_ALREADY_USED", HttpStatus.UNAUTHORIZED);
         }
-        if(userAuthDTO.getCnpj() != null && userAuthDTO.getCnpj().isEmpty()){
-            if (validateUserByCpf) {
-                throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
-            }
-        }
-        if (userAuthDTO.getCpf() != null && userAuthDTO.getCpf().isEmpty()) {
-            if (validateUserByCnpj) {
-                throw new InfoException("MESSAGES.CNPJ_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
-            }
+        if (validateUserByCpf) {
+            throw new InfoException("MESSAGES.CPF_ALREADY_REGISTERED", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -218,10 +207,6 @@ public class AuthServiceImpl implements AuthService {
                 .filter(role -> role.getId().equals(roleId))
                 .toList();
     }
-
-
-
-
 
 }
 

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.images.UserImageDTO;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.entity.images.UserImage;
@@ -64,10 +65,8 @@ public class UserImageServiceImpl  implements UserImageService{
     @Override
     public UserImageDTO getImageByUserId(Long userId) {
         Optional<UserImage> userImage = userImageRepository.findByUserAuthId(userId);
-        if (userImage.isPresent()) {
-            return objectMapper.convertValue(userImage, new TypeReference<UserImageDTO>() {});
-        }
-        return null;
+        return userImage.<UserImageDTO>map(image -> objectMapper.convertValue(image, new TypeReference<>() {
+        })).orElse(null);
     }
     
 }
