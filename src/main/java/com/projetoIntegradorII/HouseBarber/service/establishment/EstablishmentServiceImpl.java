@@ -3,6 +3,8 @@ package com.projetoIntegradorII.HouseBarber.service.establishment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
+import com.projetoIntegradorII.HouseBarber.service.Utils.InfoDTO.InfoDTOService;
+import org.apache.http.protocol.HTTP;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,8 @@ public class EstablishmentServiceImpl implements EstablishmentService{
 
     private final ObjectMapper objectMapper;
 
+    private final InfoDTOService infoDTOService;
+
     @Override
     public InfoDTO<EstablishmentDTO> creatEstablishment(EstablishmentDTO establishmentDTO) {
         InfoDTO<EstablishmentDTO> infoDTO = new InfoDTO<>();
@@ -47,19 +51,14 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             if (establishmentDTO.getCnpj().isEmpty() || establishmentDTO.getCnpj() == null){
                 throw new InfoException("CNPJ É NECESSARIO", HttpStatus.BAD_REQUEST);
             }
-
             Establishment establishment = new Establishment();
-
             establishment.setName(establishmentDTO.getName());
             establishment.setCnpj(establishmentDTO.getCnpj());
             establishment.setContact(establishmentDTO.getContact());
             establishment.setDaysOpens(establishmentDTO.getDaysOpens());
             establishment.setBilling(establishmentDTO.getBilling());
             establishment.setTime(establishmentDTO.getTime());
-            
-
             establishmentRepository.saveAndFlush(establishment);
-
             infoDTO.setMessage("Sucesso amigao");
             infoDTO.setObject(establishmentDTO);
             infoDTO.setStatus(HttpStatus.CREATED);        
@@ -91,7 +90,7 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             Page<Establishment> establishmentPage = establishmentRepository.findEstablishmentsByUserId(userId, pageable);
             List<EstablishmentDTO> establishmentDTOList = establishmentPage.getContent()
                     .stream()
-                    .map(entity -> objectMapper.convertValue(entity, EstablishmentDTO.class))
+                    .map(this::convertToDto)
                     .toList();
             Page<EstablishmentDTO> establishmentDTOS = new PageImpl<>(
                     establishmentDTOList,
@@ -108,21 +107,48 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             return infoDTO;
         } catch (Exception e) {
             infoDTO.setSuccess(false);
-            infoDTO.setStatus(HttpStatus.BAD_REQUEST);
+            infoDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             infoDTO.setMessage("Erro Interno");
             return infoDTO;
         }
         return infoDTO;
     }
+    @Override
+    public InfoDTO<EstablishmentDTO> findEstablishmentById(Long establismentId){
+        InfoDTO<EstablishmentDTO> infoEstablishmentDTO = new InfoDTO<EstablishmentDTO>();
+        try{
+            Optional<Establishment> optionalEstablishment = establishmentRepository.findById(establismentId);
+            if(optionalEstablishment.isEmpty()){
+                throw new InfoException("Estabelecimento não encontrado", HttpStatus.BAD_REQUEST);
+            }
+            EstablishmentDTO establishmentDTO = objectMapper.convertValue(optionalEstablishment.get(), EstablishmentDTO.class);
+            infoEstablishmentDTO.setSuccess(true);
+            infoEstablishmentDTO.setStatus(HttpStatus.OK);
+            infoEstablishmentDTO.setObject(establishmentDTO);
+        } catch (InfoException infoException){
+            infoEstablishmentDTO.setSuccess(false);
+            infoEstablishmentDTO.setStatus(HttpStatus.BAD_REQUEST);
+            infoEstablishmentDTO.setMessage(infoException.getMessage());
+            return infoEstablishmentDTO;
+        } catch (Exception exception){
+            infoEstablishmentDTO.setSuccess(false);
+            infoEstablishmentDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            infoEstablishmentDTO.setMessage("Erro Interno");
+            return infoEstablishmentDTO;
+        }
+        return infoEstablishmentDTO;
+    }
 
-//    private EstablishmentDTO convertToDto(Establishment establishment) {
-//        EstablishmentDTO dto = objectMapper.convertValue(establishment, EstablishmentDTO.class);
-//
-//        String formattedAddress = establishment.getAddress().getState() + ", " +
-//                establishment.getAddress().getCity() + " - " +
-//                establishment.getAddress().getStreet();
-//        dto.setFormattedAddress(formattedAddress);
-//        return dto;
-//    }
+
+    private EstablishmentDTO convertToDto(Establishment establishment) {
+        EstablishmentDTO dto = objectMapper.convertValue(establishment, EstablishmentDTO.class);
+
+        String formattedAddress = establishment.getAddress().getState() + ", " +
+                establishment.getAddress().getCity() + " - " +
+                establishment.getAddress().getStreet();
+        dto.setFormattedAddress(formattedAddress);
+        return dto;
+    }
+
 
 }

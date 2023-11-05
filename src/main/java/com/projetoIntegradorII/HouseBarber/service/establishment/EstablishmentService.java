@@ -12,4 +12,7 @@ public interface EstablishmentService {
      InfoDTO<EstablishmentDTO> creatEstablishment(EstablishmentDTO establishmentDTO);
 
      InfoDTO<Page<EstablishmentDTO>> listEstablishment(Long userId, Pageable pageable);
+
+     InfoDTO<EstablishmentDTO> findEstablishmentById(Long establishmentId);
+
 }

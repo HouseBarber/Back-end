@@ -42,7 +42,7 @@ public class EstablishmentController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
-    @GetMapping(value = "/{userId}")
+    @GetMapping(value = "/user/{userId}")
     @ApiOperation(value = "Criar Estabelecimento", notes = "" +
             "Recebe dados")
     @ApiResponses(value = {
@@ -53,5 +53,17 @@ public class EstablishmentController {
         InfoDTO<Page<EstablishmentDTO>> infoDTO = establishmentService.listEstablishment(userId, pageable);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
-    
+
+    @GetMapping(value = "/{establishmentId}")
+    @ApiOperation(value = "Criar Estabelecimento", notes = "" +
+            "Recebe dados")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
+            @ApiResponse(code = 401, message = "Não Autorizado"),
+            @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
+    public ResponseEntity<InfoDTO<EstablishmentDTO>> findEstablishmentById(@PathVariable Long establishmentId) {
+        InfoDTO<EstablishmentDTO> infoDTO = establishmentService.findEstablishmentById(establishmentId);
+        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    }
+
 }
