@@ -1,6 +1,5 @@
 package com.projetoIntegradorII.HouseBarber.service.establishment;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.repository.authentication.UserAuthRepository;
@@ -20,7 +19,6 @@ import com.projetoIntegradorII.HouseBarber.repository.establishment.Establishmen
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -74,7 +72,6 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             return infoDTO;
         }
         catch (Exception e) {
-            e.printStackTrace();
             infoDTO.setSuccess(false);
             infoDTO.setStatus(HttpStatus.BAD_REQUEST); 
             infoDTO.setMessage("Erro Interno");  
@@ -117,5 +114,15 @@ public class EstablishmentServiceImpl implements EstablishmentService{
         }
         return infoDTO;
     }
+
+//    private EstablishmentDTO convertToDto(Establishment establishment) {
+//        EstablishmentDTO dto = objectMapper.convertValue(establishment, EstablishmentDTO.class);
+//
+//        String formattedAddress = establishment.getAddress().getState() + ", " +
+//                establishment.getAddress().getCity() + " - " +
+//                establishment.getAddress().getStreet();
+//        dto.setFormattedAddress(formattedAddress);
+//        return dto;
+//    }
 
 }

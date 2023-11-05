@@ -43,4 +43,5 @@ public class Address extends Auditable {
 
     @OneToOne(mappedBy = "address")
     private UserAuth userAuth;
+
 }
