@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projetoIntegradorII.HouseBarber.dto.authentication.UserAuthDTO;
 import com.projetoIntegradorII.HouseBarber.dto.images.UserImageDTO;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import com.projetoIntegradorII.HouseBarber.entity.images.UserImage;

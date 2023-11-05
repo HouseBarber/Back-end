@@ -1,9 +1,9 @@
 package com.projetoIntegradorII.HouseBarber.entity.establishment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.projetoIntegradorII.HouseBarber.entity.address.Address;
 import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 
-import com.projetoIntegradorII.HouseBarber.entity.autenticathion.UserAuth;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +49,10 @@ public class Establishment {
     @ManyToOne
     @JoinColumn(name = "userAuth", referencedColumnName = "id")
     private UserAuth userAuth;
+
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id") // Esta é a coluna na tabela 'establishment' com a FK
+    private Address address;
 
     @Column(name = "daysOpens", nullable = false)
     private String daysOpens;
