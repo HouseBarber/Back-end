@@ -19,8 +19,10 @@ public class TokenRecovery extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     @Column(name = "token")
     private String token;
+
     @OneToOne()
     @JoinColumn(name = "user_auth", referencedColumnName = "id")
     private UserAuth userAuth;

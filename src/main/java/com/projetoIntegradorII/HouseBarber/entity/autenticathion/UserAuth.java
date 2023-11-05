@@ -3,12 +3,12 @@ package com.projetoIntegradorII.HouseBarber.entity.autenticathion;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.projetoIntegradorII.HouseBarber.entity.Auditable;
 import com.projetoIntegradorII.HouseBarber.entity.address.Address;
-import com.projetoIntegradorII.HouseBarber.entity.establishment.Establishment;
 import com.projetoIntegradorII.HouseBarber.entity.roles.Roles;
 
 import lombok.*;
 
 import javax.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
