@@ -13,4 +13,6 @@ public interface EstablishmentService {
 
      InfoDTO<EstablishmentDTO> findEstablishmentById(Long establishmentId);
 
+     InfoDTO<EstablishmentDTO> updateEstablishment(EstablishmentDTO establishmentDTO);
+
 }

@@ -42,6 +42,18 @@ public class EstablishmentController {
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
+    @PutMapping(value = "updateEstablishment")
+    @ApiOperation(value = "Atualizar Estabelecimento", notes = "" +
+            "Recebe dados")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
+            @ApiResponse(code = 401, message = "Não Autorizado"),
+            @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
+    public ResponseEntity<InfoDTO<EstablishmentDTO>> updateEstablishment(@RequestBody EstablishmentDTO establishmentDTO) {
+        InfoDTO<EstablishmentDTO> infoDTO = establishmentService.updateEstablishment(establishmentDTO);
+        return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
+    }
+
     @GetMapping(value = "/user/{userId}")
     @ApiOperation(value = "Criar Estabelecimento", notes = "" +
             "Recebe dados")

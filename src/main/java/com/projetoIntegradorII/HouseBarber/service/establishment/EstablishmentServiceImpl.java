@@ -33,22 +33,21 @@ public class EstablishmentServiceImpl implements EstablishmentService{
 
     private final ObjectMapper objectMapper;
 
-    private final InfoDTOService infoDTOService;
 
     @Override
     public InfoDTO<EstablishmentDTO> creatEstablishment(EstablishmentDTO establishmentDTO) {
         InfoDTO<EstablishmentDTO> infoDTO = new InfoDTO<>();
 
         try {
-            if (establishmentDTO.getName().isEmpty() || establishmentDTO.getName() == null){
+            if (establishmentDTO.getName().isEmpty()){
                 throw new InfoException("NOME REQUERIDO", HttpStatus.BAD_REQUEST);
             }
 
-            if (establishmentDTO.getContact().isEmpty() || establishmentDTO.getContact() == null){
+            if (establishmentDTO.getContact().isEmpty()){
                 throw new InfoException("CONTATO REQUERIDO", HttpStatus.BAD_REQUEST);
             }
 
-            if (establishmentDTO.getCnpj().isEmpty() || establishmentDTO.getCnpj() == null){
+            if (establishmentDTO.getCnpj().isEmpty()){
                 throw new InfoException("CNPJ É NECESSARIO", HttpStatus.BAD_REQUEST);
             }
             Establishment establishment = new Establishment();
@@ -58,7 +57,7 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             establishment.setDaysOpens(establishmentDTO.getDaysOpens());
             establishment.setBilling(establishmentDTO.getBilling());
             establishment.setTime(establishmentDTO.getTime());
-            establishmentRepository.saveAndFlush(establishment);
+            establishmentRepository.save(establishment);
             infoDTO.setMessage("Sucesso amigao");
             infoDTO.setObject(establishmentDTO);
             infoDTO.setStatus(HttpStatus.CREATED);        
@@ -134,6 +133,36 @@ public class EstablishmentServiceImpl implements EstablishmentService{
             infoEstablishmentDTO.setSuccess(false);
             infoEstablishmentDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             infoEstablishmentDTO.setMessage("Erro Interno");
+            return infoEstablishmentDTO;
+        }
+        return infoEstablishmentDTO;
+    }
+    @Override
+    public InfoDTO<EstablishmentDTO> updateEstablishment(EstablishmentDTO establishmentDTO){
+        InfoDTO<EstablishmentDTO> infoEstablishmentDTO = new InfoDTO<EstablishmentDTO>();
+        try {
+            if (establishmentDTO.getName().isEmpty()) {
+                throw new InfoException("NOME REQUERIDO", HttpStatus.BAD_REQUEST);
+            }
+
+            if (establishmentDTO.getContact().isEmpty()) {
+                throw new InfoException("CONTATO REQUERIDO", HttpStatus.BAD_REQUEST);
+            }
+
+            if (establishmentDTO.getCnpj().isEmpty()) {
+                throw new InfoException("CNPJ É NECESSARIO", HttpStatus.BAD_REQUEST);
+            }
+            Establishment establishment = objectMapper.convertValue(establishmentDTO, Establishment.class);
+            establishmentRepository.save(establishment);
+
+            infoEstablishmentDTO.setObject(establishmentDTO);
+            infoEstablishmentDTO.setSuccess(true);
+            infoEstablishmentDTO.setMessage("Atualizado com sucesso");
+
+        } catch (InfoException exception){
+            infoEstablishmentDTO.setSuccess(false);
+            infoEstablishmentDTO.setStatus(HttpStatus.BAD_REQUEST);
+            infoEstablishmentDTO.setMessage(exception.getMessage());
             return infoEstablishmentDTO;
         }
         return infoEstablishmentDTO;
