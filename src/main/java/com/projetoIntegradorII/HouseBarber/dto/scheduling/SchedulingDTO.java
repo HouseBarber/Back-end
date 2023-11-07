@@ -10,15 +10,11 @@ import lombok.Data;
 public class SchedulingDTO {
     private Long id;
 
-    private LocalDateTime date;
-
     private LocalDateTime timeInit;
 
     private LocalDateTime timeEnd;
 
     private Status status;
-
-    private String title;
 
     private String observation;
 

@@ -33,13 +33,13 @@ public class Scheduling extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDateTime date;
-    //@JsonFormat(pattern = "HH:mm:ss")
+
     private LocalDateTime timeInit;
+
     private LocalDateTime timeEnd;
+
     private Status status;
-    private String title;
+    
     private String observation;
 
     @ManyToOne

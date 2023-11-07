@@ -25,13 +25,11 @@ public class SchedulingServiceImpl implements SchedulingService{
     @Override
     public SchedulingDTO create(SchedulingDTO schedulingDTO) {
         try {
-            validateScheduling(schedulingDTO);
+            //validateScheduling(schedulingDTO);
             Scheduling newObj = Scheduling.builder()
-                .title(schedulingDTO.getTitle())
                 .observation(schedulingDTO.getObservation())
                 .timeInit(schedulingDTO.getTimeInit())
                 .timeEnd(schedulingDTO.getTimeEnd())
-                .date(schedulingDTO.getDate())
                 .status(schedulingDTO.getStatus())
                 .client(schedulingDTO.getClient())
                 .barber(schedulingDTO.getBarber())
@@ -44,7 +42,7 @@ public class SchedulingServiceImpl implements SchedulingService{
     }
 
     @Override
-    public SchedulingDTO getById(Long id) {
+    public SchedulingDTO findById(Long id) {
         try {
             Scheduling scheduling = schedulingRepository.findById(id).orElseThrow();
             return objectMapper.convertValue(scheduling, new TypeReference<SchedulingDTO>() {});
@@ -55,34 +53,33 @@ public class SchedulingServiceImpl implements SchedulingService{
 
     @Override
     public SchedulingDTO update(Long id, SchedulingDTO schedulingDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try {
+            //validateScheduling(schedulingDTO);
+            Scheduling obj = Scheduling.builder()
+                .id(schedulingDTO.getId())
+                .observation(schedulingDTO.getObservation())
+                .timeInit(schedulingDTO.getTimeInit())
+                .timeEnd(schedulingDTO.getTimeEnd())
+                .status(schedulingDTO.getStatus())
+                .client(schedulingDTO.getClient())
+                .barber(schedulingDTO.getBarber())
+                .build();
+            schedulingRepository.save(obj);
+            return objectMapper.convertValue(obj, new TypeReference<SchedulingDTO>() {});
+        } catch (Exception e) {
+            throw new InfoException(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
      private void validateScheduling(SchedulingDTO schedulingDTO) throws Exception{
-        if(schedulingDTO.getDate().isEqual(null)){
-            throw new Exception("Campo date é obrigatório");
-        }
-        if(schedulingDTO.getTimeInit().isEqual(null)){
+        if(schedulingDTO.getTimeInit() == null){
             throw new Exception("Campo timeInit é obrigatório");
         }
-        if(schedulingDTO.getTimeEnd().isEqual(null)){
+        if(schedulingDTO.getTimeEnd() == null){
             throw new Exception("Campo timeEnd é obrigatório");
         }
-        if(schedulingDTO.getBarber() == null){
-            throw new Exception("Campo date é obrigatório");
-        }
-        if(schedulingDTO.getClient() == null){
-            throw new Exception("Campo client é obrigatório");
-        }
         if(schedulingDTO.getStatus() == null){
-            throw new Exception("Campo date é obrigatório");
-        }
-        if(schedulingDTO.getTitle() == null){
-            throw new Exception("Campo title é obrigatório");
-        }
-        if(schedulingDTO.getObservation() == null){
-            throw new Exception("Campo observation é obrigatório");
+            throw new Exception("Campo status é obrigatório");
         }
      }
     
