@@ -7,9 +7,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:mysql://localhost:3306/barbearia
-    username: aluno
-    password: mysql
+    url: jdbc:mysql://localhost:3304/barbearia
+    username: root
+    password: 
   servlet:
     multipart:
       max-file-size: 10MB

@@ -1,7 +1,15 @@
 package com.projetoIntegradorII.HouseBarber.enums;
 
 public enum Status {
-    OPEN,
-    SCHEDULED,
-    CLOSED;
+    OPEN("OPEN"), CLOSED("CLOSED"), SCHEDULE("SCHEDULE"), REQUESTED("REQUESTED");
+
+    private String status;
+
+    Status(String role){
+        this.status = role;
+    }
+
+    public String getStatus(){
+        return status;
+    }
 }

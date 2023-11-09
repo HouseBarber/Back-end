@@ -7,7 +7,7 @@ CREATE TABLE roles (
    created_by VARCHAR(255) NOT NULL,
    created_date TIMESTAMP NOT NULL,
    last_modified_by VARCHAR(255) NOT NULL,
-   last_modified_date TIMESTAMP NOT NULL
+   last_modified_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO barbearia.roles (id, active, created_by, created_date, last_modified_by, last_modified_date, description, name, role) VALUES (1, true, 'Rachid', '2023-02-10 14:11:07', 'Rachid', '2023-02-10 14:11:10', 'Role de Administrador', 'Admin', 'BARBEARIA_ROLE_ADMIN');
