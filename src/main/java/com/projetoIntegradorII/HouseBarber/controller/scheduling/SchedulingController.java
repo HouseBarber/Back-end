@@ -42,20 +42,19 @@ public class SchedulingController {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<SchedulingDTO>> creatEstablishment(@RequestBody SchedulingDTO establishmentDTO) {
-        InfoDTO<SchedulingDTO> infoDTO = schedulingService.created(establishmentDTO);
+    public ResponseEntity<InfoDTO<SchedulingDTO>> creatEstablishment(@RequestBody SchedulingDTO schedulingDTO) {
+        InfoDTO<SchedulingDTO> infoDTO = schedulingService.created(schedulingDTO);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
     @PutMapping(value = "")
-    @ApiOperation(value = "Atualizar agendamento", notes = "" +
-            "Recebe dados")
+    @ApiOperation(value = "Atualizar agendamento", notes = "" + "Recebe dados")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
             @ApiResponse(code = 500, message = "Erro Interno de Servidor"),})
-    public ResponseEntity<InfoDTO<SchedulingDTO>> updateEstablishment(@RequestBody SchedulingDTO establishmentDTO) {
-        InfoDTO<SchedulingDTO> infoDTO = schedulingService.updated(establishmentDTO);
+    public ResponseEntity<InfoDTO<SchedulingDTO>> updateEstablishment(@RequestBody SchedulingDTO schedulingDTO) {
+        InfoDTO<SchedulingDTO> infoDTO = schedulingService.updated(schedulingDTO);
         return ResponseEntity.status(infoDTO.getStatus()).body(infoDTO);
     }
 
