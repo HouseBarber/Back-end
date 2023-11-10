@@ -1,6 +1,7 @@
 package com.projetoIntegradorII.HouseBarber.entity.scheduling;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,9 +35,9 @@ public class Scheduling extends Auditable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime timeInit;
+    private Date timeInit;
 
-    private LocalDateTime timeEnd;
+    private Date timeEnd;
 
     private Status status;
     
