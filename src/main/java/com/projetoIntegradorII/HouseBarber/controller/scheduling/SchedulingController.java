@@ -1,18 +1,13 @@
 package com.projetoIntegradorII.HouseBarber.controller.scheduling;
 
-import java.net.URI;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.projetoIntegradorII.HouseBarber.dto.InfoDTO;
 import com.projetoIntegradorII.HouseBarber.dto.scheduling.SchedulingDTO;
@@ -22,10 +17,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.persistence.*;
 
 @Api(tags = {"Scheduling Controller"})
 @RequiredArgsConstructor
@@ -59,8 +54,7 @@ public class SchedulingController {
     }
 
     @GetMapping(value = "{id}")
-    @ApiOperation(value = "Criar Estabelecimento", notes = "" +
-            "Recebe dados")
+    @ApiOperation(value = "Criar Estabelecimento", notes = "" + "Recebe dados")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = InfoDTO.class),
             @ApiResponse(code = 401, message = "Não Autorizado"),
