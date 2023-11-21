@@ -49,7 +49,6 @@ public class SpringFoxConfig {
             .name(HttpHeaders.AUTHORIZATION)
             .scheme("bearer")
             .description("Bearer Token")
-            //  After that, just add token that will do , Will it be automatic ”Bearer “ On the prefix
             .bearerFormat("Bearer ")
             .build();
     }
