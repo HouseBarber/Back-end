@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    
     @PutMapping(value = "/update/{id}")
     @ApiOperation(value = "Update user", notes = "" +
             "Returns update information for the user, along with the permissions attached to the user.")
